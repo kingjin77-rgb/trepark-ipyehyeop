@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>에코델타시티 푸르지오 트레파크 입주예정자협의회</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&family=Wanted+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ════════ DESIGN TOKENS ════════ */
+:root{
+  /* 푸르지오 공식 브랜드 컬러 */
+  --prugio-green:#1D6B3B;
+  --prugio-green-2:#2A8A50;
+  --prugio-green-light:#E8F5ED;
+  --prugio-gold:#B8972A;
+  --prugio-gold-light:#FBF6E8;
+
+  /* 사이드바 */
+  --sidebar-bg:#111C17;
+  --sidebar-hover:#1D6B3B22;
+  --sidebar-active:#1D6B3B;
+  --sidebar-text:#9AB5A3;
+  --sidebar-text-active:#fff;
+  --sidebar-w:240px;
+
+  /* 콘텐츠 */
+  --bg:#F0F4F1;
+  --surface:#FFFFFF;
+  --surface-2:#F7FAF8;
+  --border:#E2EBE5;
+  --border-strong:#C8D9CE;
+
+  /* 텍스트 */
+  --text-primary:#0E1F16;
+  --text-secondary:#4A6357;
+  --text-muted:#8BA598;
+
+  /* 상태 */
+  --red:#C0392B; --red-bg:#FEF0EE;
+  --amber:#B07D00; --amber-bg:#FFF8E6;
+  --blue:#1A5A9E; --blue-bg:#EBF2FC;
+
+  /* 타이포 */
+  --font:"Noto Sans KR",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --radius-sm:6px;
+  --radius:10px;
+  --radius-lg:14px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.10),0 1px 3px rgba(0,0,0,.06);
+}
+
+/* ════════ RESET ════════ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;height:100%}
+body{
+  font-family:var(--font);background:var(--bg);color:var(--text-primary);
+  line-height:1.55;font-size:14px;min-height:100vh;
+  display:flex;
+}
+button,input,select,textarea{font-family:var(--font)}
+button{cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+
+/* ════════ LAYOUT ════════ */
+/* 사이드바 */
+#sidebar{
+  width:var(--sidebar-w);min-height:100vh;
+  background:var(--sidebar-bg);color:var(--sidebar-text);
+  display:flex;flex-direction:column;flex-shrink:0;
+  position:fixed;left:0;top:0;bottom:0;z-index:200;
+  transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.sb-logo{
+  padding:22px 20px 18px;border-bottom:1px solid #ffffff0e;
+}
+.sb-brand{
+  display:flex;align-items:center;gap:10px;margin-bottom:6px;
+}
+.sb-emblem{
+  width:36px;height:36px;border-radius:8px;
+  background:var(--prugio-green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;color:#fff;letter-spacing:-.02em;
+  flex-shrink:0;
+}
+.sb-apt{font-size:11.5px;font-weight:700;color:#fff;line-height:1.3;letter-spacing:-.01em}
+.sb-apt small{display:block;font-size:10px;font-weight:400;color:var(--sidebar-text);margin-top:1px}
+.sb-rate{
+  background:var(--prugio-green);border-radius:var(--radius-sm);
+  padding:8px 12px;margin-top:10px;
+}
+.sb-rate .label{font-size:10px;font-weight:600;color:#ffffff90;letter-spacing:.04em;text-transform:uppercase}
+.sb-rate .value{font-size:22px;font-weight:900;color:#fff;line-height:1.1;margin-top:2px}
+.sb-rate .bar{height:3px;background:#ffffff25;border-radius:2px;margin-top:8px;overflow:hidden}
+.sb-rate .bar i{display:block;height:100%;background:var(--prugio-gold);border-radius:2px;transition:width .5s ease}
+
+nav.sb-nav{flex:1;overflow-y:auto;padding:10px 0;scrollbar-width:none}
+nav.sb-nav::-webkit-scrollbar{display:none}
+.nav-group{padding:14px 12px 4px}
+.nav-group-label{
+  font-size:9.5px;font-weight:700;color:#ffffff35;
+  letter-spacing:.12em;text-transform:uppercase;padding:0 8px;margin-bottom:4px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 8px;border-radius:var(--radius-sm);
+  font-size:13.5px;font-weight:500;color:var(--sidebar-text);
+  cursor:pointer;transition:.15s;margin-bottom:1px;
+}
+.nav-item:hover{background:var(--sidebar-hover);color:#fff}
+.nav-item.on{background:var(--sidebar-active);color:#fff;font-weight:700}
+.nav-item .icon{
+  width:32px;height:32px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;
+  background:transparent;transition:.15s;
+}
+.nav-item.on .icon{background:rgba(255,255,255,.15)}
+.nav-item .badge{
+  margin-left:auto;background:var(--prugio-gold);color:#fff;
+  border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;
+}
+
+.sb-bottom{padding:14px;border-top:1px solid #ffffff0e}
+.sb-user{display:flex;align-items:center;gap:9px}
+.sb-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--prugio-green);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;flex-shrink:0;
+}
+.sb-user-info .name{font-size:13px;font-weight:600;color:#fff}
+.sb-user-info .role{font-size:11px;color:var(--sidebar-text)}
+
+/* 메인 컨텐츠 */
+#main{
+  margin-left:var(--sidebar-w);flex:1;min-height:100vh;
+  display:flex;flex-direction:column;
+}
+.topbar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 28px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar-title{font-size:16px;font-weight:800;color:var(--text-primary);letter-spacing:-.01em}
+.topbar-sub{font-size:12.5px;color:var(--text-muted);margin-left:4px}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.topbar-apt-logo img{height:24px;object-fit:contain}
+.topbar-date{font-size:12.5px;color:var(--text-secondary);font-weight:500}
+.topbar-menu-btn{
+  display:none;width:36px;height:36px;border-radius:8px;
+  background:var(--surface-2);border:1px solid var(--border);
+  align-items:center;justify-content:center;font-size:18px;
+}
+
+.content{padding:24px 28px 60px;flex:1}
+.view{display:none}.view.on{display:block}
+
+/* ════════ 카드 시스템 ════════ */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:22px;
+  box-shadow:var(--shadow);
+}
+.card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:18px;
+}
+.card-title{
+  font-size:14px;font-weight:700;color:var(--text-primary);
+  display:flex;align-items:center;gap:8px;
+}
+.card-title .dot{
+  width:4px;height:16px;background:var(--prugio-green);border-radius:2px;
+}
+.card-meta{font-size:12px;color:var(--text-muted);font-weight:500}
+
+/* ════════ 통계 카드 ════════ */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:18px;box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.stat-card.hero{
+  background:linear-gradient(135deg,var(--prugio-green) 0%,var(--prugio-green-2) 100%);
+  border-color:transparent;
+}
+.stat-card.hero::after{
+  content:"";position:absolute;right:-20px;top:-20px;
+  width:80px;height:80px;border-radius:50%;
+  background:rgba(255,255,255,.07);
+}
+.stat-card .sk{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.stat-card.hero .sk{color:rgba(255,255,255,.65)}
+.stat-card .sv{font-size:30px;font-weight:900;color:var(--text-primary);letter-spacing:-.03em;line-height:1}
+.stat-card.hero .sv{color:#fff}
+.stat-card .sv small{font-size:14px;font-weight:600;color:var(--text-muted)}
+.stat-card.hero .sv small{color:rgba(255,255,255,.7)}
+.stat-card .sparkline{margin-top:12px}
+.sparkline-bar{height:4px;border-radius:2px;background:var(--border);overflow:hidden}
+.sparkline-bar i{display:block;height:100%;border-radius:2px;background:var(--prugio-green);transition:width .6s ease}
+.stat-card.hero .sparkline-bar{background:rgba(255,255,255,.2)}
+.stat-card.hero .sparkline-bar i{background:var(--prugio-gold)}
+.stat-card .trend{display:flex;align-items:center;gap:4px;margin-top:8px;font-size:11.5px;font-weight:600;color:var(--prugio-green)}
+.stat-card.hero .trend{color:rgba(255,255,255,.8)}
+
+/* ════════ 2열 레이아웃 ════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.col-span-2{grid-column:span 2}
+
+/* ════════ 위임률 도넛 차트 영역 ════════ */
+.rate-display{display:flex;align-items:center;gap:24px}
+.donut-wrap{position:relative;flex-shrink:0}
+.donut-wrap svg{transform:rotate(-90deg)}
+.donut-center{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+}
+.donut-center .pct{font-size:26px;font-weight:900;color:var(--prugio-green);letter-spacing:-.03em}
+.donut-center .label{font-size:10px;font-weight:600;color:var(--text-muted);letter-spacing:.04em}
+.rate-stats{flex:1}
+.rate-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;
+}
+.rate-row:last-child{border:none}
+.rate-row .key{color:var(--text-secondary);font-weight:500}
+.rate-row .val{font-weight:800;color:var(--text-primary)}
+
+/* ════════ 배치도 그리드 ════════ */
+.dong-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.dong-tab{
+  padding:6px 13px;border-radius:20px;font-size:12.5px;font-weight:600;
+  border:1px solid var(--border);background:var(--surface-2);color:var(--text-secondary);
+  cursor:pointer;transition:.12s;
+}
+.dong-tab:hover{border-color:var(--prugio-green);color:var(--prugio-green)}
+.dong-tab.on{background:var(--prugio-green);border-color:var(--prugio-green);color:#fff}
+.dong-tab .cnt{font-size:10.5px;margin-left:3px;opacity:.75}
+.map-scroll{overflow-x:auto;padding-bottom:4px}
+.unit-grid{display:grid;gap:3px;min-width:max-content}
+.unit{
+  min-width:48px;padding:6px 2px;border-radius:5px;
+  border:1px solid var(--border);background:var(--surface-2);
+  text-align:center;font-size:11px;font-weight:700;color:var(--text-muted);
+  cursor:pointer;transition:.1s;user-select:none;
+}
+.unit:hover{transform:scale(1.1);z-index:10;position:relative;box-shadow:var(--shadow-md)}
+.unit.ok{background:var(--prugio-green);border-color:var(--prugio-green);color:#fff}
+.unit.no{background:var(--red);border-color:var(--red);color:#fff}
+.floor-label{
+  min-width:36px;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:var(--text-muted);
+}
+.map-legend{display:flex;gap:16px;margin-top:12px;font-size:12px;color:var(--text-secondary);flex-wrap:wrap}
+.map-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+/* ════════ 타임라인 ════════ */
+.timeline{position:relative;padding-left:26px}
+.timeline::before{
+  content:"";position:absolute;left:7px;top:8px;bottom:8px;
+  width:1.5px;background:var(--border);border-radius:1px;
+}
+.tl-item{position:relative;margin-bottom:14px}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{
+  position:absolute;left:-22px;top:3px;
+  width:13px;height:13px;border-radius:50%;
+  border:2px solid var(--prugio-green);background:var(--surface);
+}
+.tl-item.done .tl-dot{background:var(--prugio-green)}
+.tl-item.now .tl-dot{
+  background:var(--prugio-gold);border-color:var(--prugio-gold);
+  box-shadow:0 0 0 3px var(--prugio-gold-light);
+}
+.tl-date{font-size:11px;color:var(--text-muted);margin-bottom:2px;font-weight:500}
+.tl-text{font-size:13.5px;font-weight:700;color:var(--text-secondary)}
+.tl-item.done .tl-text{color:var(--text-muted);font-weight:500;text-decoration:line-through;text-decoration-color:var(--border)}
+.tl-item.now .tl-text{color:var(--prugio-green);font-weight:800}
+.tl-badge{
+  display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;
+  border-radius:4px;margin-left:6px;vertical-align:1px;
+}
+.tl-badge.now{background:var(--prugio-gold-light);color:var(--prugio-gold)}
+.tl-badge.done{background:var(--prugio-green-light);color:var(--prugio-green)}
+
+/* ════════ 테이블 ════════ */
+.tbl-wrap{overflow-x:auto}
+table.dtable{width:100%;border-collapse:collapse;font-size:13px}
+table.dtable th{
+  padding:9px 12px;text-align:left;font-size:11px;font-weight:700;
+  color:var(--text-muted);border-bottom:1px solid var(--border);
+  white-space:nowrap;letter-spacing:.02em;text-transform:uppercase;
+  background:var(--surface-2);
+}
+table.dtable th:first-child{border-radius:var(--radius-sm) 0 0 0}
+table.dtable th:last-child{border-radius:0 var(--radius-sm) 0 0}
+table.dtable td{
+  padding:10px 12px;border-bottom:1px solid var(--border);
+  white-space:nowrap;color:var(--text-primary);
+}
+table.dtable tbody tr:hover td{background:var(--prugio-green-light)}
+table.dtable tbody tr:last-child td{border-bottom:none}
+
+/* ════════ 배지 ════════ */
+.tag{display:inline-flex;align-items:center;gap:4px;border-radius:5px;padding:3px 8px;font-size:11.5px;font-weight:700}
+.tag.green{background:var(--prugio-green-light);color:var(--prugio-green)}
+.tag.red{background:var(--red-bg);color:var(--red)}
+.tag.amber{background:var(--amber-bg);color:var(--amber)}
+.tag.blue{background:var(--blue-bg);color:var(--blue)}
+
+/* ════════ 폼 요소 ════════ */
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:5px;letter-spacing:.01em}
+.form-label .req{color:var(--red)}
+.form-control{
+  width:100%;padding:10px 13px;
+  border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  font-family:var(--font);font-size:13.5px;color:var(--text-primary);
+  background:var(--surface);transition:.15s;
+}
+.form-control:focus{outline:none;border-color:var(--prugio-green);box-shadow:0 0 0 3px var(--prugio-green-light)}
+.form-control::placeholder{color:var(--text-muted)}
+.radio-group{display:flex;gap:8px;flex-wrap:wrap}
+.radio-option{
+  flex:1;min-width:130px;padding:10px 13px;
+  border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:600;cursor:pointer;
+  background:var(--surface);transition:.12s;color:var(--text-secondary);
+}
+.radio-option:has(input:checked){
+  border-color:var(--prugio-green);background:var(--prugio-green-light);
+  color:var(--prugio-green);
+}
+.radio-option input[type=radio]{accent-color:var(--prugio-green)}
+
+/* ════════ 버튼 ════════ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:10px 20px;border-radius:var(--radius-sm);
+  font-family:var(--font);font-size:13.5px;font-weight:700;
+  cursor:pointer;transition:.15s;border:none;white-space:nowrap;
+}
+.btn-primary{background:var(--prugio-green);color:#fff}
+.btn-primary:hover{background:var(--prugio-green-2)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}
+.btn-outline:hover{border-color:var(--prugio-green);color:var(--prugio-green);background:var(--prugio-green-light)}
+.btn-danger{background:transparent;border:1.5px solid var(--red);color:var(--red)}
+.btn-sm{padding:7px 13px;font-size:12.5px}
+.btn-full{width:100%}
+
+/* ════════ 서명 패드 ════════ */
+.sig-container{
+  border:2px dashed var(--border);border-radius:var(--radius);
+  background:var(--surface-2);position:relative;
+  transition:.15s;
+}
+.sig-container.active{border-color:var(--prugio-green);border-style:solid;background:#fff}
+#sigCanvas{width:100%;height:160px;display:block;touch-action:none;border-radius:calc(var(--radius) - 2px)}
+.sig-placeholder{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;pointer-events:none;
+  color:var(--text-muted);gap:8px;font-size:13px;font-weight:500;
+}
+.sig-placeholder svg{opacity:.35}
+.sig-toolbar{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+
+/* ════════ 공지 아이템 ════════ */
+.notice-item{
+  display:flex;align-items:flex-start;gap:12px;padding:12px 0;
+  border-bottom:1px solid var(--border);cursor:pointer;transition:.12s;
+}
+.notice-item:last-child{border:none}
+.notice-item:hover{margin:0 -22px;padding:12px 22px;background:var(--prugio-green-light);border-radius:var(--radius-sm)}
+.notice-cat{
+  flex-shrink:0;padding:3px 8px;border-radius:4px;font-size:10.5px;font-weight:700;
+}
+.notice-cat.imp{background:var(--red-bg);color:var(--red)}
+.notice-cat.normal{background:var(--prugio-green-light);color:var(--prugio-green)}
+.notice-title-text{font-size:13.5px;font-weight:700;margin-bottom:2px;color:var(--text-primary)}
+.notice-date{font-size:11.5px;color:var(--text-muted)}
+
+/* ════════ 단지 정보 그리드 ════════ */
+.apt-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.apt-info-item{
+  background:var(--surface-2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:14px;
+}
+.apt-info-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+.apt-info-value{font-size:18px;font-weight:900;color:var(--prugio-green);letter-spacing:-.02em}
+.apt-info-unit{font-size:12px;font-weight:500;color:var(--text-muted);margin-left:2px}
+
+/* ════════ 세대 타입 바 차트 ════════ */
+.type-bar-list{display:flex;flex-direction:column;gap:10px}
+.type-bar-item .meta{display:flex;justify-content:space-between;margin-bottom:4px}
+.type-bar-item .type-name{font-size:13px;font-weight:700;color:var(--text-primary)}
+.type-bar-item .type-cnt{font-size:12px;color:var(--text-muted);font-weight:500}
+.type-bar-track{height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.type-bar-fill{height:100%;border-radius:4px;background:var(--prugio-green);transition:width .5s ease}
+
+/* ════════ 조직도 ════════ */
+.org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.org-card{
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 12px;text-align:center;background:var(--surface);
+  transition:.12s;
+}
+.org-card:hover{border-color:var(--prugio-green);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.org-avatar{
+  width:46px;height:46px;border-radius:50%;margin:0 auto 10px;
+  background:var(--prugio-green-light);color:var(--prugio-green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:800;
+}
+.org-pos{font-size:10.5px;font-weight:700;color:var(--text-muted);letter-spacing:.03em;text-transform:uppercase;margin-bottom:3px}
+.org-name{font-size:14px;font-weight:800;color:var(--text-primary)}
+
+/* ════════ 회비 ════════ */
+.budget-item{
+  display:flex;align-items:center;gap:12px;padding:11px 0;
+  border-bottom:1px solid var(--border);
+}
+.budget-item:last-child{border:none}
+.budget-icon{
+  width:36px;height:36px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;
+}
+.budget-icon.in{background:var(--prugio-green-light)}
+.budget-icon.out{background:var(--red-bg)}
+.budget-name{font-size:13.5px;font-weight:700;color:var(--text-primary)}
+.budget-meta{font-size:11.5px;color:var(--text-muted);margin-top:1px}
+.budget-amt{margin-left:auto;font-size:15px;font-weight:900;white-space:nowrap}
+.budget-amt.in{color:var(--prugio-green)}
+.budget-amt.out{color:var(--red)}
+
+/* ════════ Q&A ════════ */
+.qa-item{border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden}
+.qa-q{
+  display:flex;align-items:center;gap:10px;padding:13px 15px;
+  cursor:pointer;background:var(--surface);transition:.12s;
+}
+.qa-q:hover{background:var(--prugio-green-light)}
+.qa-num{
+  width:22px;height:22px;border-radius:50%;background:var(--prugio-green);
+  color:#fff;font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.qa-text{font-size:13.5px;font-weight:700;color:var(--text-primary);flex:1}
+.qa-arrow{color:var(--text-muted);font-size:11px;transition:.2s}
+.qa-a{
+  display:none;padding:12px 15px;background:var(--surface-2);
+  border-top:1px solid var(--border);font-size:13px;color:var(--text-secondary);line-height:1.7;
+}
+.qa-item.open .qa-arrow{transform:rotate(180deg)}
+.qa-item.open .qa-a{display:block}
+
+/* ════════ 잠금 화면 ════════ */
+.lock-screen{
+  max-width:380px;margin:60px auto;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:36px;
+  box-shadow:var(--shadow-md);text-align:center;
+}
+.lock-icon{
+  width:60px;height:60px;border-radius:16px;
+  background:var(--prugio-green-light);color:var(--prugio-green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;margin:0 auto 18px;
+}
+.lock-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.lock-sub{font-size:13px;color:var(--text-muted);margin-bottom:22px}
+
+/* ════════ 설정 섹션 ════════ */
+.setting-section{margin-bottom:26px}
+.setting-section-title{
+  font-size:11px;font-weight:800;color:var(--text-muted);
+  letter-spacing:.08em;text-transform:uppercase;
+  padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:14px;
+}
+input[type=color]{
+  width:48px;height:40px;padding:2px;border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);background:var(--surface);cursor:pointer;
+}
+.color-row{display:flex;gap:10px;align-items:flex-end}
+.color-row .form-group{flex:1;margin-bottom:0}
+
+/* ════════ 완료 화면 ════════ */
+.done-screen{text-align:center;padding:40px 20px}
+.done-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--prugio-green);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin:0 auto 18px;
+  animation:scaleIn .35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes scaleIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.done-title{font-size:20px;font-weight:900;margin-bottom:8px;color:var(--text-primary)}
+.done-desc{font-size:13.5px;color:var(--text-secondary);margin-bottom:24px;line-height:1.65}
+
+/* ════════ 인쇄 위임장 ════════ */
+#printLayer{display:none}
+@media print{
+  body *{visibility:hidden!important}
+  #printLayer,#printLayer *{visibility:visible!important}
+  #printLayer{
+    display:block!important;position:fixed!important;
+    inset:0!important;background:#fff!important;
+    z-index:99999!important;padding:0!important;
+  }
+  @page{size:A4;margin:14mm 16mm}
+}
+#printLayer{
+  font-family:"Batang","바탕","Apple SD Gothic Neo","Malgun Gothic",serif;
+  font-size:11pt;color:#000;line-height:1.6;
+}
+.pl-header{text-align:center;margin-bottom:18px}
+.pl-title{font-size:18pt;font-weight:900;letter-spacing:.06em;margin-bottom:6px}
+.pl-subtitle{font-size:10pt;color:#444}
+.pl-divider{border:none;border-top:1.5px solid #000;margin:12px 0}
+.pl-sec-title{font-size:10pt;font-weight:800;margin:14px 0 6px}
+.pl-table{width:100%;border-collapse:collapse;margin-bottom:6px}
+.pl-table th,.pl-table td{border:1px solid #000;padding:7px 9px;font-size:10.5pt;vertical-align:middle}
+.pl-table th{background:#f0f0f0;font-weight:700;text-align:center;width:22%}
+.pl-terms-box{border:1px solid #000;padding:10px 12px;font-size:9.5pt}
+.pl-terms-box ol{padding-left:16px;display:grid;gap:3px}
+.pl-note{font-size:9pt;margin-top:8px;color:#333;line-height:1.6}
+.pl-privacy{border:1px solid #000;padding:9px 12px;font-size:9.5pt;margin-top:10px}
+.pl-privacy b{display:block;text-align:center;font-size:10.5pt;margin-bottom:5px}
+.pl-date{text-align:center;font-size:11.5pt;margin:22px 0 8px}
+.pl-sign-row{display:flex;justify-content:flex-end;align-items:center;gap:14px;margin-top:6px}
+.pl-sign-row img{height:52px}
+.pl-footer{text-align:center;font-size:13.5pt;font-weight:900;margin-top:28px;letter-spacing:.06em}
+.cbx{font-family:sans-serif}
+
+/* ════════ 토스트 ════════ */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--text-primary);color:#fff;
+  padding:11px 22px;border-radius:8px;font-size:13.5px;font-weight:500;
+  opacity:0;pointer-events:none;z-index:9999;
+  transition:all .25s;box-shadow:var(--shadow-md);white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ════════ 반응형 ════════ */
+@media(max-width:900px){
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .topbar-menu-btn{display:flex}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .col-span-2{grid-column:span 1}
+  .content{padding:16px 16px 60px}
+  .apt-info-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .apt-info-grid{grid-template-columns:1fr 1fr}
+  .org-grid{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ════════ 관리자 서브탭 ════════ */
+.admin-subtabs{
+  display:flex;gap:0;border:1px solid var(--border);
+  border-radius:var(--radius-sm);overflow:hidden;margin-bottom:18px;
+  background:var(--surface-2);
+}
+.admin-subtab{
+  flex:1;padding:9px 6px;font-size:12.5px;font-weight:600;
+  color:var(--text-muted);text-align:center;cursor:pointer;
+  border:none;background:transparent;transition:.12s;
+}
+.admin-subtab.on{background:var(--prugio-green);color:#fff;font-weight:700}
+.admin-subtab:not(.on):hover{color:var(--prugio-green);background:var(--prugio-green-light)}
+
+/* 행 버튼 */
+.row-actions{display:flex;gap:5px}
+.row-actions button{
+  padding:4px 10px;font-size:11.5px;font-weight:600;border-radius:4px;
+  border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);
+  cursor:pointer;transition:.12s;
+}
+.row-actions button:hover{border-color:var(--prugio-green);color:var(--prugio-green)}
+.row-actions button.del:hover{border-color:var(--red);color:var(--red)}
+
+/* 사이드바 오버레이 */
+#overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);
+  z-index:150;
+}
+#overlay.show{display:block}
+</style>
+</head>
+<body>
+
+<!-- ▣ 오버레이 (모바일) -->
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ▣ 사이드바 -->
+<aside id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-brand">
+      <div class="sb-emblem">P</div>
+      <div class="sb-apt">
+        에코델타시티<br>푸르지오 트레파크
+        <small>입주예정자협의회</small>
+      </div>
+    </div>
+    <div class="sb-rate">
+      <div class="label">위임장 접수율</div>
+      <div class="value"><span id="sbRate">0</span>%</div>
+      <div class="bar"><i id="sbRateBar" style="width:0%"></i></div>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="nav-group">
+      <div class="nav-group-label">입주민</div>
+      <div class="nav-item on" id="ni-home" onclick="go('home')">
+        <div class="icon">🏠</div>홈 대시보드
+      </div>
+      <div class="nav-item" id="ni-delegate" onclick="go('delegate')">
+        <div class="icon">📋</div>위임장 제출
+      </div>
+      <div class="nav-item" id="ni-notice" onclick="go('notice')">
+        <div class="icon">📢</div>공지사항
+      </div>
+      <div class="nav-item" id="ni-schedule" onclick="go('schedule')">
+        <div class="icon">📅</div>일정 타임라인
+      </div>
+      <div class="nav-item" id="ni-gallery" onclick="go('gallery')">
+        <div class="icon">📸</div>현장 사진
+      </div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">단지 정보</div>
+      <div class="nav-item" id="ni-aptinfo" onclick="go('aptinfo')">
+        <div class="icon">🏗️</div>단지 개요
+      </div>
+      <div class="nav-item" id="ni-org" onclick="go('org')">
+        <div class="icon">👥</div>임원진 소개
+      </div>
+      <div class="nav-item" id="ni-budget" onclick="go('budget')">
+        <div class="icon">💰</div>회비·지출 내역
+      </div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">운영진</div>
+      <div class="nav-item" id="ni-admin" onclick="go('admin')">
+        <div class="icon">⚙️</div>관리자 패널
+      </div>
+    </div>
+  </nav>
+
+  <div class="sb-bottom">
+    <div class="sb-user">
+      <div class="sb-avatar">협</div>
+      <div class="sb-user-info">
+        <div class="name">입주예정자협의회</div>
+        <div class="role">공식 운영 플랫폼</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ▣ 메인 -->
+<div id="main">
+  <!-- 탑바 -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="topbar-menu-btn" onclick="toggleSidebar()">☰</button>
+      <div>
+        <span class="topbar-title" id="topbarTitle">홈 대시보드</span>
+        <span class="topbar-sub" id="topbarSub"></span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <a href="https://cafe.naver.com/redp2ygz" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--prugio-green-light);color:var(--prugio-green);border:1px solid var(--g-mid,#C2E0CC);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;text-decoration:none;transition:var(--transition, .18s)" onmouseover="this.style.background='var(--prugio-green)';this.style.color='#fff'" onmouseout="this.style.background='var(--prugio-green-light)';this.style.color='var(--prugio-green)'">💚 입예협 카페</a>
+      <div style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--sub);background:var(--surface2,#F5FAF6);border:1px solid var(--line);border-radius:20px;padding:4px 10px">
+        <div id="ghDot" style="width:7px;height:7px;border-radius:50%;background:#aaa;flex-shrink:0"></div>
+        <span id="ghStatus">연결 중…</span>
+      </div>
+      <div class="topbar-date" id="topDate"></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ════ 홈 ════ -->
+    <div id="view-home" class="view on">
+      <!-- 통계 -->
+      <div class="stats-grid">
+        <div class="stat-card hero">
+          <div class="sk">위임장 접수율</div>
+          <div class="sv"><span id="stRate">0</span><small>%</small></div>
+          <div class="sparkline">
+            <div class="sparkline-bar"><i id="stRateBar" style="width:0%"></i></div>
+          </div>
+          <div class="trend" id="stRateTrend">총 <span id="stTotal">0</span>세대 중 <span id="stDone">0</span>세대 접수</div>
+        </div>
+        <div class="stat-card">
+          <div class="sk">총 세대수</div>
+          <div class="sv" id="stTotalDisp">1,370</div>
+          <div class="trend" style="color:var(--text-muted);font-size:11px;margin-top:10px">13개동 · 지상 24층</div>
+        </div>
+        <div class="stat-card">
+          <div class="sk">동의 접수</div>
+          <div class="sv" id="stAgree">0</div>
+          <div class="trend" style="color:var(--text-muted);font-size:11px;margin-top:10px">위임 동의 세대</div>
+        </div>
+        <div class="stat-card">
+          <div class="sk">미동의 / 미접수</div>
+          <div class="sv" id="stDeny">0<small style="font-size:16px"> / </small><span id="stLeft">0</span></div>
+          <div class="trend" style="color:var(--text-muted);font-size:11px;margin-top:10px">
+            <span id="stLeft2">0</span>세대 미접수
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:14px">
+        <!-- 위임률 도넛 -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="dot"></span>동의 현황</div>
+            <div class="card-meta" id="homeRateMeta">0 / 1,370 세대</div>
+          </div>
+          <div class="rate-display">
+            <div class="donut-wrap">
+              <svg width="110" height="110" viewBox="0 0 110 110">
+                <circle cx="55" cy="55" r="42" fill="none" stroke="#E2EBE5" stroke-width="12"/>
+                <circle id="donutArc" cx="55" cy="55" r="42" fill="none"
+                  stroke="#1D6B3B" stroke-width="12"
+                  stroke-dasharray="0 264" stroke-linecap="round"
+                  style="transition:stroke-dasharray .6s ease"/>
+              </svg>
+              <div class="donut-center">
+                <div class="pct" id="donutPct">0%</div>
+                <div class="label">접수율</div>
+              </div>
+            </div>
+            <div class="rate-stats">
+              <div class="rate-row"><span class="key">📗 동의</span><span class="val" id="rsAgree">0세대</span></div>
+              <div class="rate-row"><span class="key">📕 미동의</span><span class="val" id="rsDeny">0세대</span></div>
+              <div class="rate-row"><span class="key">⬜ 미접수</span><span class="val" id="rsLeft">0세대</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 최근 공지 -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="dot"></span>최근 공지</div>
+            <button class="btn btn-outline btn-sm" onclick="go('notice')">전체보기</button>
+          </div>
+          <div id="homeNotices">
+            <div style="color:var(--text-muted);font-size:13px;padding:10px 0">등록된 공지가 없습니다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 외부 채널 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="dot"></span>외부 채널 · 바로가기</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <a id="extCafe" href="https://pf.kakao.com/_xmxfiFG" target="_blank"
+            style="display:flex;flex-direction:column;align-items:center;gap:8px;
+              padding:16px 10px;border:1px solid var(--border);border-radius:var(--radius);
+              text-decoration:none;color:var(--text-primary);transition:.12s;"
+            onmouseover="this.style.borderColor='var(--prugio-green)'"
+            onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:26px">🟢</div>
+            <div style="font-size:12.5px;font-weight:700">네이버 카페</div>
+            <div style="font-size:11px;color:var(--text-muted)">공식 커뮤니티</div>
+          </a>
+          <a id="extKakao" href="https://pf.kakao.com/_xmxfiFG" target="_blank"
+            style="display:flex;flex-direction:column;align-items:center;gap:8px;
+              padding:16px 10px;border:1px solid var(--border);border-radius:var(--radius);
+              text-decoration:none;color:var(--text-primary);transition:.12s;"
+            onmouseover="this.style.borderColor='var(--prugio-green)'"
+            onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:26px">💬</div>
+            <div style="font-size:12.5px;font-weight:700">카카오 오픈톡</div>
+            <div style="font-size:11px;color:var(--text-muted)">입주민 전용</div>
+          </a>
+          <a href="https://www.prugio.com/hb/2025/trepark/" target="_blank"
+            style="display:flex;flex-direction:column;align-items:center;gap:8px;
+              padding:16px 10px;border:1px solid var(--border);border-radius:var(--radius);
+              text-decoration:none;color:var(--text-primary);transition:.12s;"
+            onmouseover="this.style.borderColor='var(--prugio-green)'"
+            onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:26px">🏗️</div>
+            <div style="font-size:12.5px;font-weight:700">공식 분양 사이트</div>
+            <div style="font-size:11px;color:var(--text-muted)">대우건설</div>
+          </a>
+          <a href="https://www.prugio.com/hb/2025/trepark/pages/e_modelhouse.asp" target="_blank"
+            style="display:flex;flex-direction:column;align-items:center;gap:8px;
+              padding:16px 10px;border:1px solid var(--border);border-radius:var(--radius);
+              text-decoration:none;color:var(--text-primary);transition:.12s;"
+            onmouseover="this.style.borderColor='var(--prugio-green)'"
+            onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:26px">🏠</div>
+            <div style="font-size:12.5px;font-weight:700">E-모델하우스</div>
+            <div style="font-size:11px;color:var(--text-muted)">평면도 보기</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ 위임장 제출 ════ -->
+    <div id="view-delegate" class="view">
+      <div id="delegateForm">
+        <div class="grid-2" style="margin-bottom:14px">
+          <div class="card col-span-2">
+            <div class="card-header">
+              <div class="card-title"><span class="dot"></span>계약자 정보</div>
+              <div class="card-meta">반드시 계약자명으로 작성</div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">성명 <span class="req">*</span></label>
+                <input id="fName" class="form-control" placeholder="계약자 성명" autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label class="form-label">생년월일 <span class="req">*</span></label>
+                <input id="fBirth" class="form-control" placeholder="1985-03-21" inputmode="numeric" maxlength="10">
+              </div>
+              <div class="form-group">
+                <label class="form-label">계약 동 <span class="req">*</span></label>
+                <select id="fDong" class="form-control"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">계약 호수 <span class="req">*</span></label>
+                <input id="fHo" class="form-control" placeholder="예: 1503" inputmode="numeric" maxlength="5">
+              </div>
+              <div class="form-group" style="grid-column:1/-1">
+                <label class="form-label">연락처 (휴대전화) <span class="req">*</span></label>
+                <input id="fPhone" class="form-control" placeholder="010-0000-0000" inputmode="tel" maxlength="13">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-header">
+            <div class="card-title"><span class="dot"></span>위임사항 확인</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:var(--radius-sm);
+            background:var(--surface-2);padding:14px 16px;max-height:200px;overflow-y:auto;
+            font-size:12.5px;line-height:1.7;color:var(--text-secondary)">
+            <ol id="termsList" style="padding-left:16px;display:grid;gap:5px"></ol>
+            <p style="margin-top:10px;color:var(--text-muted);font-size:12px">
+              상기 위임 사항에 대하여 임원진들은 주택법 시행령 및 관련 법령을 준수하고 투명하게 운영하기로 하며, 의결내용 및 비용처리 내역은 카페 내 게시합니다.
+            </p>
+          </div>
+          <div class="form-group" style="margin-top:16px">
+            <label class="form-label">위임 동의 여부 <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="fAgree" value="동의" checked> ☑ 동의</label>
+              <label class="radio-option"><input type="radio" name="fAgree" value="미동의"> ☐ 미동의</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">개인정보 수집·이용·제공 동의 <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="fPriv" value="동의"> 동의합니다</label>
+              <label class="radio-option"><input type="radio" name="fPriv" value="미동의"> 동의하지 않습니다</label>
+            </div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:7px">
+              개인정보는 협의회 운영 목적 외에는 사용되지 않습니다.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="card-header">
+            <div class="card-title"><span class="dot"></span>자필 서명</div>
+            <div class="card-meta">손가락 또는 마우스로 직접 서명</div>
+          </div>
+          <div class="sig-container" id="sigBox">
+            <canvas id="sigCanvas"></canvas>
+            <div class="sig-placeholder" id="sigPh">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/>
+              </svg>
+              여기에 서명하세요
+            </div>
+          </div>
+          <div class="sig-toolbar">
+            <span style="font-size:12px;color:var(--text-muted)">서명 이미지가 위임장 PDF에 포함됩니다</span>
+            <button class="btn btn-outline btn-sm" onclick="clearSig()">서명 지우기</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" style="padding:14px;font-size:15px" onclick="submitDelegate()">
+          위임장 제출하기 →
+        </button>
+      </div>
+
+      <div id="delegateDone" class="card done-screen" style="display:none">
+        <div class="done-icon">✓</div>
+        <div class="done-title">위임장이 접수되었습니다</div>
+        <div class="done-desc" id="doneMsg"></div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <div style="background:var(--amber-soft);border:1px solid #d4a800;border-radius:var(--r-sm);padding:12px 14px;font-size:13px;color:var(--amber);margin-bottom:4px">📌 PDF 출력이 필요한 경우 <b>운영진 또는 법무법인 제이엘</b>에 문의하세요.</div>
+          <button class="btn btn-outline" onclick="resetDelegate()">새 위임장 작성</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════ 투표·설문 ════ -->
+    <div id="view-vote" class="view">
+      <div id="voteListEl"></div>
+      <div id="voteEmptyEl" class="card" style="text-align:center;padding:40px;display:none">
+        <div style="font-size:32px;margin-bottom:10px">🗳️</div>
+        <div style="font-weight:800;font-size:15px;margin-bottom:6px">진행 중인 투표가 없습니다</div>
+        <div style="font-size:13px;color:var(--sub)">운영진이 투표를 등록하면 여기에 표시됩니다.</div>
+      </div>
+    </div>
+    <!-- ════ 공지사항 ════ -->
+    <div id="view-notice" class="view">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="dot"></span>공지사항</div>
+        </div>
+        <div id="noticeList"></div>
+        <div id="noticeEmpty" style="text-align:center;padding:24px;color:var(--text-muted);display:none">
+          등록된 공지가 없습니다.
+        </div>
+      </div>
+      <div class="card" id="noticeDetailCard" style="display:none;margin-top:14px">
+        <div class="card-header">
+          <div class="card-title" id="ndTitle"></div>
+          <button class="btn btn-outline btn-sm" onclick="document.getElementById('noticeDetailCard').style.display='none'">목록</button>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px" id="ndMeta"></div>
+        <div style="font-size:13.5px;line-height:1.75;white-space:pre-wrap;color:var(--text-primary)" id="ndBody"></div>
+      </div>
+    </div>
+
+    <!-- ════ 일정 ════ -->
+    <div id="view-schedule" class="view">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="dot"></span>입주를 향한 여정</div>
+          <div class="card-meta">에코델타시티 푸르지오 트레파크</div>
+        </div>
+        <div class="timeline" id="timelineEl"></div>
+      </div>
+    </div>
+
+    <!-- ════ 현장사진 ════ -->
+    <div id="view-gallery" class="view">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="dot"></span>현장 사진 갤러리</div>
+          <div class="card-meta">공정 현황</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="galGrid">
+          <div style="aspect-ratio:4/3;border-radius:var(--radius-sm);background:var(--prugio-green-light);
+            display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--prugio-green)">
+            2024.07 — 기초공사
+          </div>
+          <div style="aspect-ratio:4/3;border-radius:var(--radius-sm);background:#E8F5ED;
+            display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#2A7A4A">
+            2024.11 — 골조공사
+          </div>
+          <div style="aspect-ratio:4/3;border-radius:var(--radius-sm);background:#D5EDDE;
+            display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#1D6040">
+            2025.03 — 외벽공사
+          </div>
+          <div style="aspect-ratio:4/3;border-radius:var(--radius-sm);background:#C2E5CB;
+            display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#165534">
+            2025.05 — 마감공사
+          </div>
+          <div style="aspect-ratio:4/3;border-radius:var(--radius-sm);background:#AFDDBA;
+            display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#0E4228">
+            2025.06 — 조경공사
+          </div>
+          <div style="aspect-ratio:4/3;border-radius:var(--radius-sm);background:#9DD5A9;
+            display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#0A341F">
+            2025.07 — 전경
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:14px;font-size:12.5px;color:var(--text-muted)">
+          관리자 패널에서 실제 공사 사진을 등록할 수 있습니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ 단지 정보 ════ -->
+    <div id="view-aptinfo" class="view">
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-header">
+          <div class="card-title"><span class="dot"></span>단지 개요</div>
+          <a href="https://www.prugio.com/hb/2025/trepark/pages/overview.asp" target="_blank"
+            class="btn btn-outline btn-sm">공식 사이트 ↗</a>
+        </div>
+        <div class="apt-info-grid" id="aptInfoGrid">
+          <div class="apt-info-item"><div class="apt-info-label">총 세대수</div><div class="apt-info-value">1,370 <span class="apt-info-unit">세대</span></div></div>
+          <div class="apt-info-item"><div class="apt-info-label">개동 수</div><div class="apt-info-value">13 <span class="apt-info-unit">개동</span></div></div>
+          <div class="apt-info-item"><div class="apt-info-label">최고 층수</div><div class="apt-info-value">지상 24 <span class="apt-info-unit">층</span></div></div>
+          <div class="apt-info-item"><div class="apt-info-label">주택형</div><div class="apt-info-value" style="font-size:13px">59·84㎡</div></div>
+          <div class="apt-info-item"><div class="apt-info-label">지하</div><div class="apt-info-value">지하 2 <span class="apt-info-unit">층</span></div></div>
+          <div class="apt-info-item"><div class="apt-info-label">위치</div><div class="apt-info-value" style="font-size:12px;line-height:1.3">부산 강서구<br>에코델타 11BL</div></div>
+        </div>
+        <div style="margin-top:14px;padding:12px 14px;background:var(--surface-2);border-radius:var(--radius-sm);font-size:12.5px;color:var(--text-secondary);line-height:1.7">
+          <b style="color:var(--text-primary)">시행</b> 부산도시공사 (민간참여 공공주택건설사업)<br>
+          <b style="color:var(--text-primary)">시공</b> ㈜대우건설 · ㈜HJ중공업 · ㈜삼미건설 · ㈜한창이엔씨 · 지원건설㈜
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:14px">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="dot"></span>타입별 세대 구성</div>
+            <div class="card-meta">총 1,370세대</div>
+          </div>
+          <div class="type-bar-list" id="typeBarList"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="dot"></span>자주 묻는 질문</div>
+          </div>
+          <div id="qaList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ 조직 ════ -->
+    <div id="view-org" class="view">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="dot"></span>임원진 소개</div>
+        </div>
+        <div class="org-grid" id="orgGrid">
+          <div style="color:var(--text-muted);font-size:13px;grid-column:1/-1;padding:10px 0">관리자 패널에서 임원진을 등록해 주세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ 회비 ════ -->
+    <div id="view-budget" class="view">
+      <div class="grid-2" style="margin-bottom:14px">
+        <div class="stat-card"><div class="sk">총 수입</div><div class="sv" id="bIn">0<small style="font-size:14px">원</small></div></div>
+        <div class="stat-card"><div class="sk">총 지출</div><div class="sv" id="bOut">0<small style="font-size:14px">원</small></div></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="dot"></span>회비·지출 내역</div>
+          <div class="card-meta">투명 공개</div>
+        </div>
+        <div id="budgetList"></div>
+        <div id="budgetEmpty" style="text-align:center;padding:24px;color:var(--text-muted);display:none">등록된 내역이 없습니다.</div>
+      </div>
+    </div>
+
+    <!-- ════ 관리자 ════ -->
+    <div id="view-admin" class="view">
+      <div id="lockScreen" class="lock-screen">
+        <div class="lock-icon">🔐</div>
+        <div class="lock-title">운영진 인증</div>
+        <div class="lock-sub">관리자 접속 코드를 입력하세요<br><span style="font-size:11px">초기 코드: 1234</span></div>
+        <div class="form-group">
+          <input id="pinInput" class="form-control" type="password" placeholder="접속 코드"
+            maxlength="12" style="text-align:center;letter-spacing:.3em;font-size:18px"
+            onkeydown="if(event.key==='Enter')unlock()">
+        </div>
+        <button class="btn btn-primary btn-full" onclick="unlock()">접속하기</button>
+      </div>
+
+      <div id="adminPanel" style="display:none">
+        <!-- 서브탭 -->
+        <div class="admin-subtabs">
+          <button class="admin-subtab on" id="at-map" onclick="aTab('map')">배치도</button>
+          <button class="admin-subtab" id="at-list" onclick="aTab('list')">접수목록</button>
+          <button class="admin-subtab" id="at-notice" onclick="aTab('notice')">공지</button>
+          <button class="admin-subtab" id="at-sched" onclick="aTab('sched')">일정</button>
+          <button class="admin-subtab" id="at-budget" onclick="aTab('budget')">회비</button>
+          <button class="admin-subtab" id="at-org" onclick="aTab('org')">조직</button>
+          <button class="admin-subtab" id="at-cfg" onclick="aTab('cfg')">설정</button>
+        </div>
+
+        <!-- 배치도 -->
+        <div id="apv-map">
+          <div class="stats-grid" style="margin-bottom:14px">
+            <div class="stat-card hero">
+              <div class="sk">접수율</div>
+              <div class="sv"><span id="aRate">0</span><small>%</small></div>
+              <div class="sparkline"><div class="sparkline-bar"><i id="aRateBar" style="width:0%"></i></div></div>
+            </div>
+            <div class="stat-card"><div class="sk">총 세대</div><div class="sv" id="aTotal">0</div></div>
+            <div class="stat-card"><div class="sk">접수 완료</div><div class="sv" id="aDone">0</div></div>
+            <div class="stat-card"><div class="sk">미접수</div><div class="sv" id="aLeft">0</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="dot"></span>동별 세대 배치도</div>
+              <div class="card-meta">클릭 → 접수 확인 · PDF 출력</div>
+            </div>
+            <div class="dong-tabs" id="dongTabs"></div>
+            <div class="map-scroll"><div class="unit-grid" id="unitGrid"></div></div>
+            <div class="map-legend">
+              <span><i style="background:var(--prugio-green)"></i>접수 (동의)</span>
+              <span><i style="background:var(--red)"></i>접수 (미동의)</span>
+              <span><i style="background:var(--surface-2);border:1px solid var(--border)"></i>미접수</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 접수목록 -->
+        <div id="apv-list" style="display:none">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="dot"></span>위임장 접수 목록</div>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-outline btn-sm" onclick="exportCSV()">CSV 다운로드</button>
+                <button class="btn btn-outline btn-sm" onclick="exportJSON()">JSON 백업</button>
+              </div>
+            </div>
+            <div class="tbl-wrap">
+              <table class="dtable">
+                <thead><tr><th>접수일시</th><th>동/호수</th><th>성명</th><th>연락처</th><th>위임</th><th>개인정보</th><th>관리</th></tr></thead>
+                <tbody id="listBody"></tbody>
+              </table>
+            </div>
+            <div id="listEmpty" style="text-align:center;padding:24px;color:var(--text-muted)">접수된 위임장이 없습니다.</div>
+          </div>
+        </div>
+
+
+        <!-- 투표 관리 -->
+        <div id="apv-vote-m" style="display:none">
+          <div class="card" style="margin-bottom:12px">
+            <div class="card-title" style="margin-bottom:16px"><span style="width:4px;height:16px;background:var(--gold);border-radius:2px;display:inline-block;margin-right:8px"></span>투표 등록</div>
+            <div class="form-group"><label class="form-label">투표 제목 <span class="req">*</span></label><input id="vtTitle" class="form-ctrl" placeholder="예: 법무법인 선정에 관한 투표"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="form-group"><label class="form-label">시작일</label><input id="vtStart" class="form-ctrl" type="date"></div>
+              <div class="form-group"><label class="form-label">종료일</label><input id="vtEnd" class="form-ctrl" type="date"></div>
+            </div>
+            <div class="form-group"><label class="form-label">선택지 (줄바꿈으로 구분) <span class="req">*</span></label><textarea id="vtOpts" class="form-ctrl" rows="4" placeholder="법무법인 제이엘&#10;기타 법무법인&#10;반대합니다"></textarea></div>
+            <button class="btn btn-primary btn-full" onclick="addVote()">투표 등록</button>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px"><span style="width:4px;height:16px;background:var(--gold);border-radius:2px;display:inline-block;margin-right:8px"></span>등록된 투표</div>
+            <div id="voteMgmtEl"><div style="color:var(--sub);font-size:13px;padding:8px 0">없습니다.</div></div>
+          </div>
+        </div>
+        <!-- 공지 관리 -->
+        <div id="apv-notice" style="display:none">
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-title" style="margin-bottom:16px"><span class="dot"></span>공지 등록</div>
+            <div class="form-group"><label class="form-label">제목 <span class="req">*</span></label><input id="nTitle" class="form-control" placeholder="공지 제목"></div>
+            <div class="grid-2">
+              <div class="form-group"><label class="form-label">분류</label>
+                <select id="nCat" class="form-control"><option>공지</option><option>중요</option><option>일정</option><option>기타</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">날짜</label><input id="nDate" class="form-control" type="date"></div>
+            </div>
+            <div class="form-group"><label class="form-label">내용 <span class="req">*</span></label><textarea id="nBody" class="form-control" rows="4"></textarea></div>
+            <button class="btn btn-primary btn-full" onclick="addNotice()">공지 등록</button>
+          </div>
+          <div class="card"><div class="card-title" style="margin-bottom:14px"><span class="dot"></span>등록된 공지</div><div id="noticeMgmt"></div></div>
+        </div>
+
+        <!-- 일정 관리 -->
+        <div id="apv-sched" style="display:none">
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-title" style="margin-bottom:16px"><span class="dot"></span>일정 등록</div>
+            <div class="grid-2">
+              <div class="form-group"><label class="form-label">일정명 <span class="req">*</span></label><input id="scTitle" class="form-control" placeholder="예: 중도금 1차 납부"></div>
+              <div class="form-group"><label class="form-label">날짜 <span class="req">*</span></label><input id="scDate" class="form-control" type="date"></div>
+            </div>
+            <div class="form-group"><label class="form-label">상태</label>
+              <select id="scStatus" class="form-control"><option value="done">완료</option><option value="now">진행중</option><option value="">예정</option></select>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="addSched()">일정 등록</button>
+          </div>
+          <div class="card"><div class="card-title" style="margin-bottom:14px"><span class="dot"></span>등록된 일정</div><div id="schedMgmt"></div></div>
+        </div>
+
+        <!-- 회비 관리 -->
+        <div id="apv-budget" style="display:none">
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-title" style="margin-bottom:16px"><span class="dot"></span>내역 등록</div>
+            <div class="grid-2">
+              <div class="form-group"><label class="form-label">구분</label>
+                <select id="bType" class="form-control"><option value="in">수입</option><option value="out">지출</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">날짜</label><input id="bDate" class="form-control" type="date"></div>
+              <div class="form-group"><label class="form-label">항목명 <span class="req">*</span></label><input id="bName" class="form-control" placeholder="예: 회비 수금"></div>
+              <div class="form-group"><label class="form-label">금액 (원) <span class="req">*</span></label><input id="bAmt" class="form-control" placeholder="500000" inputmode="numeric"></div>
+            </div>
+            <div class="form-group"><label class="form-label">비고</label><input id="bNote" class="form-control" placeholder="메모"></div>
+            <button class="btn btn-primary btn-full" onclick="addBudget()">등록</button>
+          </div>
+        </div>
+
+        <!-- 조직 관리 -->
+        <div id="apv-org" style="display:none">
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-title" style="margin-bottom:16px"><span class="dot"></span>임원 등록</div>
+            <div class="grid-2">
+              <div class="form-group"><label class="form-label">직책 <span class="req">*</span></label><input id="oPos" class="form-control" placeholder="예: 회장"></div>
+              <div class="form-group"><label class="form-label">이름(닉네임) <span class="req">*</span></label><input id="oName" class="form-control" placeholder="예: 홍길동"></div>
+            </div>
+            <div class="form-group"><label class="form-label">이모지 아이콘</label><input id="oEmoji" class="form-control" placeholder="👤" maxlength="2"></div>
+            <button class="btn btn-primary btn-full" onclick="addOrg()">임원 등록</button>
+          </div>
+          <div class="card"><div class="card-title" style="margin-bottom:14px"><span class="dot"></span>현재 임원진</div><div id="orgMgmt"></div></div>
+        </div>
+
+        <!-- 설정 -->
+        <div id="apv-cfg" style="display:none">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:18px"><span class="dot"></span>아파트 기본 설정</div>
+            <div class="setting-section">
+              <div class="setting-section-title">브랜딩</div>
+              <div class="form-group"><label class="form-label">아파트명</label><input id="cfgName" class="form-control"></div>
+              <div class="color-row">
+                <div class="form-group"><label class="form-label">테마 색상</label><input id="cfgColor" type="color"></div>
+                <div style="font-size:12px;color:var(--text-muted);padding-bottom:12px">아파트별로 다른 브랜드 색상 적용</div>
+              </div>
+            </div>
+            <div class="setting-section">
+              <div class="setting-section-title">수임 정보</div>
+              <div class="form-group"><label class="form-label">수임 단체명</label><input id="cfgOrg" class="form-control"></div>
+              <div class="form-group"><label class="form-label">카페 주소</label><input id="cfgCafeAddr" class="form-control"></div>
+            </div>
+            <div class="setting-section">
+              <div class="setting-section-title">동·호수 배치도</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">한 줄에 하나: 동이름, 층수, 라인수 (예: 101, 24, 4)</div>
+              <div class="form-group"><textarea id="cfgDongs" class="form-control" rows="10" style="font-family:monospace;font-size:12.5px"></textarea></div>
+              <div style="font-size:11.5px;color:var(--text-muted)">라인 4 = …01~…04호. 실제 단지 배치도 기준.</div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
+              <button class="btn btn-primary" onclick="saveConfig()">설정 저장</button>
+              <button class="btn btn-outline" onclick="loadCfgForm()">초기화</button>
+            </div>
+            <div class="setting-section">
+              <div class="setting-section-title">접속 코드 변경</div>
+              <div class="form-group"><input id="cfgPin" class="form-control" maxlength="12" placeholder="새 접속 코드"></div>
+              <button class="btn btn-outline btn-sm" onclick="savePin()">코드 변경</button>
+            </div>
+            <div style="padding-top:16px;border-top:1px solid var(--border);margin-top:8px">
+              <button class="btn btn-danger btn-sm" onclick="wipeData()">접수 데이터 전체 초기화</button>
+              <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px">⚠️ 모든 위임장 접수 기록이 삭제됩니다. 되돌릴 수 없습니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- 인쇄 위임장 -->
+<div id="printLayer">
+  <div class="pl-header">
+    <div class="pl-title" id="plTitle"></div>
+    <div class="pl-subtitle">에코델타시티 푸르지오 트레파크 · 부산광역시 강서구 강동동 4434번지 일원</div>
+  </div>
+  <hr class="pl-divider">
+  <div class="pl-sec-title">※ 계약자 <span style="font-weight:400;font-size:9.5pt">(반드시 계약자명으로 기입)</span></div>
+  <table class="pl-table">
+    <tr><th>성 명</th><td id="plName" style="width:27%"></td><th>계약 동/호수</th><td id="plUnit"></td></tr>
+    <tr><th>생년월일</th><td id="plBirth"></td><th>연락처(휴대전화)</th><td id="plPhone"></td></tr>
+    <tr><th>위임 동의</th><td colspan="3" id="plAgree"></td></tr>
+  </table>
+  <div class="pl-sec-title">※ 수임자(단체)</div>
+  <table class="pl-table">
+    <tr><th>단 체 명</th><td id="plOrg"></td></tr>
+    <tr><th>카 페 주 소</th><td id="plCafe"></td></tr>
+  </table>
+  <div style="text-align:center;font-weight:800;margin:14px 0 6px;font-size:11.5pt">〈 위 임 사 항 〉</div>
+  <div class="pl-terms-box"><ol id="plTerms"></ol></div>
+  <div class="pl-note">상기 위임 사항에 대하여 입주예정자협의회 임원진들은 주택법 시행령 및 그 외 관련 법령을 준수하고 비용처리 및 사용 증빙을 철저히 하여 윤리적으로 투명하게 운영하기로 하며, 위임사항에 대한 부의안건과 의결내용 및 비용처리 내역들은 입주예정자협의회 카페 내 게시하기로 한다.</div>
+  <div class="pl-privacy">
+    <b>≪ 개인정보수집 · 이용 · 제공 동의서 ≫</b>
+    본인은 입주예정자협의회에 개인정보 수집/이용, 제3자 제공에 대하여 <span id="plPriv"></span>
+  </div>
+  <div class="pl-date" id="plDate"></div>
+  <div class="pl-sign-row">
+    <span style="font-size:12pt;font-weight:700">위임인 : <span id="plSignName"></span></span>
+    <img id="plSigImg" alt="서명">
+    <span style="font-size:10pt">(서명)</span>
+  </div>
+  <div class="pl-footer" id="plFooter"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════
+   데이터 · 설정
+══════════════════════════════ */
+const TERMS=[
+  "입주예정자의 권리·이익에 대한 업무추진방향 설정, 시공행위 감리·개선요구 및 모든 활동 및 행위 추구 일체",
+  "시행사, 시공사, 관공서 및 관계부처, 대외 관계자 등과의 협상(협의) 동의 또는 거절 및 투표 결정권 행사",
+  "아파트 단지 주변 주거 및 주변 환경 개선에 대한 모든 활동 및 행위 추구 일체와 외부 자문요청 및 진행",
+  "입주예정자협의회 운영을 위한 임원진 선출 및 관리 그리고 회원관리(가입, 등급, 징계, 탈퇴 등)",
+  "입주예정자협의회 대내외 홍보 활동 및 소통, 전화, 문자에 대한 수신 동의",
+  "입주예정자협의회에서 선정한 법무대리인에 본인의 소유권이전등기 및 근저당권 설정등기를 위임하며 협의회 지정 은행 담보(잔금)대출 상품 안내에 대한 문자 등의 수신 동의",
+  "위임장 미동의(미제출) 세대(위임자)에 대하여는 개인적 모든 사항에 대하여 민·형사상 모든 진행사항은 전적으로 개인이 부담하며 입주예정자협의회는 이에 개의치 아니한다."
+];
+
+const DEFAULT_CFG={
+  aptName:"에코델타시티 푸르지오 트레파크",
+  themeColor:"#1D6B3B",
+  pin:"1234",
+  orgName:"에코델타시티 푸르지오 트레파크 입주예정자협의회",
+  cafeAddr:"https://cafe.naver.com/",
+  dongs:[
+    {n:"101",f:24,l:4},{n:"102",f:24,l:4},{n:"103",f:24,l:3},
+    {n:"104",f:24,l:3},{n:"105",f:24,l:4},{n:"106",f:24,l:3},
+    {n:"107",f:24,l:3},{n:"108",f:24,l:3},{n:"109",f:24,l:3},
+    {n:"110",f:24,l:4},{n:"111",f:24,l:4},{n:"112",f:24,l:3},
+    {n:"113",f:24,l:3}
+  ]
+};
+
+const DEFAULT_SCHED=[
+  {t:"입예협 운영진 1차 회의",d:"2024-07-22",s:"done"},
+  {t:"법무법인 업무협약",d:"2024-09-19",s:"done"},
+  {t:"중도금 1차 납부",d:"2024-09-20",s:"done"},
+  {t:"현장 1차 방문",d:"2024-11-29",s:"done"},
+  {t:"중도금 2차 납부",d:"2025-01-10",s:"done"},
+  {t:"운영진 정기회의",d:"2025-04-16",s:"done"},
+  {t:"사전점검 예약 접수",d:"2025-05-23",s:"now"},
+  {t:"사전점검 진행",d:"2025-06-20",s:""},
+  {t:"잔금 납부 및 입주",d:"2025-08-21",s:""}
+];
+
+const TYPES=[
+  {t:"59㎡A",u:133},{t:"59㎡B",u:95},{t:"59㎡C",u:272},
+  {t:"59㎡D",u:234},{t:"59㎡E",u:112},{t:"84㎡A",u:41},
+  {t:"84㎡B",u:302},{t:"84㎡C",u:181}
+];
+
+const QA=[
+  {q:"위임장을 꼭 제출해야 하나요?",a:"미동의 세대는 협의회 활동(하자보수 협상, 시공사 대응 등)의 법적 효력에서 제외될 수 있습니다. 가능한 많은 세대가 참여할수록 협의회 효력이 강화됩니다."},
+  {q:"온라인 위임장도 법적 효력이 있나요?",a:"전자서명법 제3조에 의거하여 자필서명 이미지를 포함한 전자문서는 서면과 동일한 효력을 가집니다. PDF를 출력·보관하시길 권장합니다."},
+  {q:"법무대리인 선정 관련 안내는 언제 오나요?",a:"위임장 제출 세대에 한해 협의회 지정 법무대리인 안내 문자가 발송됩니다. 연락처를 정확히 입력해 주세요."},
+  {q:"잔금 대출 및 등기 업무는 어떻게 진행되나요?",a:"협의회 지정 법무대리인(법무법인)을 통해 소유권이전등기 및 근저당권설정등기가 집단으로 처리됩니다. 개별 처리 대비 시간과 비용이 절약됩니다."}
+];
+
+/* 저장소 */
+const _m={};
+const S={
+  async g(k){try{if(window.storage){const r=await window.storage.get(k);return r?JSON.parse(r.value):null;}}catch(e){}return _m[k]??null;},
+  async s(k,v){try{if(window.storage){await window.storage.set(k,JSON.stringify(v));return;}}catch(e){}_m[k]=v;}
+};
+
+let CFG=JSON.parse(JSON.stringify(DEFAULT_CFG));
+let DATA={}, NOTICES=[], SCHEDS=[], BUDGETS=[], ORGS=[];
+let curDong=null, curAdminTab='map', unlocked=false, lastRec=null;
+
+/* ══ 초기화 ══ */
+async function init(){
+  const c=await S.g('tp_cfg'); if(c) CFG=Object.assign({},DEFAULT_CFG,c,{dongs:c.dongs||DEFAULT_CFG.dongs});
+  const d=await S.g('tp_data'); if(d) DATA=d;
+  const n=await S.g('tp_notices'); if(n) NOTICES=n;
+  const sc=await S.g('tp_scheds'); if(sc) SCHEDS=sc; else SCHEDS=[...DEFAULT_SCHED];
+  const b=await S.g('tp_budgets'); if(b) BUDGETS=b;
+  const o=await S.g('tp_orgs'); if(o) ORGS=o;
+  applyTheme();
+  document.getElementById('termsList').innerHTML=TERMS.map(t=>`<li>${esc(t)}</li>`).join('');
+  document.getElementById('plTerms').innerHTML=TERMS.map(t=>`<li>${esc(t)}</li>`).join('');
+  setDate();
+  renderDongSel();
+  bindInputMasks();
+  initSig();
+  curDong=CFG.dongs[0]?.n||'101';
+  renderAll();
+}
+
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m]||m)}
+function gv(id){return document.getElementById(id).value.trim()}
+function rv(n){const e=document.querySelector(`input[name=${n}]:checked`);return e?e.value:''}
+
+function applyTheme(){
+  const c=CFG.themeColor;
+  document.documentElement.style.setProperty('--prugio-green',c);
+  document.documentElement.style.setProperty('--prugio-green-light',c+'18');
+  document.getElementById('topbarTitle').textContent= currentPage==='home'?'홈 대시보드':
+    currentPage==='delegate'?'위임장 제출':
+    currentPage==='notice'?'공지사항':
+    currentPage==='schedule'?'일정 타임라인':
+    currentPage==='gallery'?'현장 사진':
+    currentPage==='aptinfo'?'단지 개요':
+    currentPage==='org'?'임원진 소개':
+    currentPage==='budget'?'회비·지출 내역':'관리자 패널';
+  document.title=CFG.aptName+' 입주예정자협의회';
+}
+
+function setDate(){
+  const d=new Date();
+  document.getElementById('topDate').textContent=
+    d.getFullYear()+'년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일';
+}
+
+/* ══ 뷰 전환 ══ */
+let currentPage='home';
+const PAGES=['home','delegate','notice','schedule','gallery','aptinfo','org','budget','admin'];
+const PAGE_NAMES={home:'홈 대시보드',delegate:'위임장 제출',notice:'공지사항',
+  schedule:'일정 타임라인',gallery:'현장 사진',aptinfo:'단지 개요',
+  org:'임원진 소개',budget:'회비·지출 내역',admin:'관리자 패널'};
+
+function go(p){
+  currentPage=p;
+  PAGES.forEach(id=>{
+    document.getElementById('view-'+id)?.classList.toggle('on',id===p);
+    document.getElementById('ni-'+id)?.classList.toggle('on',id===p);
+  });
+  document.getElementById('topbarTitle').textContent=PAGE_NAMES[p]||p;
+  if(p==='admin'&&unlocked) refreshAdminAll();
+  if(p==='vote') renderVotes();
+  if(p==='delegate') setTimeout(resizeSig,50);
+  if(p==='home') renderHome();
+  window.scrollTo({top:0});
+  if(window.innerWidth<=900) closeSidebar();
+}
+
+/* ══ 사이드바 토글 (모바일) ══ */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ══ 통계 계산 ══ */
+function totalU(){return CFG.dongs.reduce((s,d)=>s+d.f*d.l,0);}
+function calcStats(){
+  const recs=Object.values(DATA);
+  const total=totalU(), done=recs.length;
+  const agree=recs.filter(r=>r.agree==='동의').length;
+  const deny=done-agree;
+  const rate=total?Math.round(done/total*1000)/10:0;
+  return{total,done,agree,deny,rate,left:total-done};
+}
+
+function updateStats(){
+  const s=calcStats();
+  // 사이드바
+  document.getElementById('sbRate').textContent=s.rate;
+  document.getElementById('sbRateBar').style.width=Math.min(s.rate,100)+'%';
+  // 홈 통계
+  document.getElementById('stRate').textContent=s.rate;
+  document.getElementById('stRateBar').style.width=Math.min(s.rate,100)+'%';
+  document.getElementById('stTotal').textContent=s.total.toLocaleString();
+  document.getElementById('stDone').textContent=s.done.toLocaleString();
+  document.getElementById('stTotalDisp').textContent=s.total.toLocaleString();
+  document.getElementById('stAgree').textContent=s.agree.toLocaleString();
+  document.getElementById('stDeny').textContent=s.deny;
+  document.getElementById('stLeft').textContent=s.left.toLocaleString();
+  document.getElementById('stLeft2').textContent=s.left.toLocaleString();
+  // 도넛
+  const circ=264, dash=circ*(s.rate/100);
+  document.getElementById('donutArc').setAttribute('stroke-dasharray',dash+' '+(circ-dash));
+  document.getElementById('donutPct').textContent=s.rate+'%';
+  document.getElementById('homeRateMeta').textContent=s.done.toLocaleString()+' / '+s.total.toLocaleString()+' 세대';
+  document.getElementById('rsAgree').textContent=s.agree.toLocaleString()+'세대';
+  document.getElementById('rsDeny').textContent=s.deny.toLocaleString()+'세대';
+  document.getElementById('rsLeft').textContent=s.left.toLocaleString()+'세대';
+  // 관리자 통계
+  document.getElementById('aRate').textContent=s.rate;
+  document.getElementById('aRateBar').style.width=Math.min(s.rate,100)+'%';
+  document.getElementById('aTotal').textContent=s.total.toLocaleString();
+  document.getElementById('aDone').textContent=s.done.toLocaleString();
+  document.getElementById('aLeft').textContent=s.left.toLocaleString();
+}
+
+/* ══ 렌더 함수들 ══ */
+function renderAll(){updateStats();renderHome();renderNotice();renderSchedule();renderAptInfo();renderOrg();renderBudget();renderVotes();}
+
+function renderHome(){
+  updateStats();
+  const nb=document.getElementById('homeNotices');
+  const recent=[...NOTICES].reverse().slice(0,4);
+  if(!recent.length){nb.innerHTML='<div style="color:var(--text-muted);font-size:13px;padding:8px 0">등록된 공지가 없습니다.</div>';return;}
+  nb.innerHTML=recent.map((n,i)=>`
+    <div class="notice-item" onclick="go('notice')">
+      <span class="notice-cat ${n.cat==='중요'?'imp':'normal'}">${esc(n.cat||'공지')}</span>
+      <div>
+        <div class="notice-title-text">${esc(n.title)}</div>
+        <div class="notice-date">${esc(n.date||'')}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderNotice(){
+  const el=document.getElementById('noticeList');
+  const emp=document.getElementById('noticeEmpty');
+  if(!NOTICES.length){el.innerHTML='';emp.style.display='block';return;}
+  emp.style.display='none';
+  el.innerHTML=[...NOTICES].reverse().map((n,i)=>`
+    <div class="notice-item" onclick="showNotice(${NOTICES.length-1-i})">
+      <span class="notice-cat ${n.cat==='중요'?'imp':'normal'}">${esc(n.cat||'공지')}</span>
+      <div style="flex:1">
+        <div class="notice-title-text">${esc(n.title)}</div>
+        <div class="notice-date">${esc(n.date||'')}</div>
+      </div>
+      <span style="color:var(--text-muted);font-size:13px">›</span>
+    </div>`).join('');
+}
+function showNotice(i){
+  const n=NOTICES[i];
+  document.getElementById('ndTitle').innerHTML='<span class="dot"></span>'+esc(n.title);
+  document.getElementById('ndMeta').textContent=(n.cat||'공지')+' · '+n.date;
+  document.getElementById('ndBody').textContent=n.body;
+  document.getElementById('noticeDetailCard').style.display='block';
+}
+
+function renderSchedule(){
+  const el=document.getElementById('timelineEl');
+  if(!SCHEDS.length){el.innerHTML='<div style="color:var(--text-muted);font-size:13px">등록된 일정이 없습니다.</div>';return;}
+  el.innerHTML=SCHEDS.map(s=>`
+    <div class="tl-item ${s.s||''}">
+      <div class="tl-dot"></div>
+      <div class="tl-date">${esc(s.d||'')}</div>
+      <div class="tl-text">${esc(s.t)}
+        ${s.s==='now'?'<span class="tl-badge now">진행중</span>':s.s==='done'?'<span class="tl-badge done">완료</span>':''}
+      </div>
+    </div>`).join('');
+}
+
+function renderAptInfo(){
+  // 타입 바 차트
+  const maxU=Math.max(...TYPES.map(t=>t.u));
+  document.getElementById('typeBarList').innerHTML=TYPES.map(t=>`
+    <div class="type-bar-item">
+      <div class="meta">
+        <span class="type-name">${t.t}</span>
+        <span class="type-cnt">${t.u.toLocaleString()}세대</span>
+      </div>
+      <div class="type-bar-track">
+        <div class="type-bar-fill" style="width:${Math.round(t.u/maxU*100)}%"></div>
+      </div>
+    </div>`).join('');
+  // Q&A
+  document.getElementById('qaList').innerHTML=QA.map((q,i)=>`
+    <div class="qa-item" id="qa${i}">
+      <div class="qa-q" onclick="toggleQa(${i})">
+        <div class="qa-num">${i+1}</div>
+        <div class="qa-text">${esc(q.q)}</div>
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-a">${esc(q.a)}</div>
+    </div>`).join('');
+}
+function toggleQa(i){document.getElementById('qa'+i).classList.toggle('open')}
+
+function renderOrg(){
+  const el=document.getElementById('orgGrid');
+  if(!ORGS.length){el.innerHTML='<div style="color:var(--text-muted);font-size:13px;grid-column:1/-1;padding:8px 0">관리자 패널에서 임원진을 등록해 주세요.</div>';return;}
+  el.innerHTML=ORGS.map(o=>`
+    <div class="org-card">
+      <div class="org-avatar">${o.emoji||o.name[0]||'👤'}</div>
+      <div class="org-pos">${esc(o.pos)}</div>
+      <div class="org-name">${esc(o.name)}</div>
+    </div>`).join('');
+}
+
+function renderBudget(){
+  const el=document.getElementById('budgetList');
+  const emp=document.getElementById('budgetEmpty');
+  if(!BUDGETS.length){el.innerHTML='';emp.style.display='block';
+    document.getElementById('bIn').innerHTML='0<small style="font-size:14px">원</small>';
+    document.getElementById('bOut').innerHTML='0<small style="font-size:14px">원</small>';return;}
+  emp.style.display='none';
+  const tIn=BUDGETS.filter(b=>b.type==='in').reduce((s,b)=>s+Number(b.amt),0);
+  const tOut=BUDGETS.filter(b=>b.type==='out').reduce((s,b)=>s+Number(b.amt),0);
+  document.getElementById('bIn').innerHTML=tIn.toLocaleString()+'<small style="font-size:14px">원</small>';
+  document.getElementById('bOut').innerHTML=tOut.toLocaleString()+'<small style="font-size:14px">원</small>';
+  el.innerHTML=[...BUDGETS].reverse().map(b=>`
+    <div class="budget-item">
+      <div class="budget-icon ${b.type}">${b.type==='in'?'💚':'💸'}</div>
+      <div style="flex:1">
+        <div class="budget-name">${esc(b.name)}</div>
+        <div class="budget-meta">${b.date||''}${b.note?' · '+esc(b.note):''}</div>
+      </div>
+      <div class="budget-amt ${b.type}">${b.type==='in'?'+':'-'}${Number(b.amt).toLocaleString()}원</div>
+    </div>`).join('');
+}
+
+/* ══ 동 선택 렌더 ══ */
+function renderDongSel(){
+  document.getElementById('fDong').innerHTML=CFG.dongs.map(d=>`<option value="${d.n}">${d.n}동</option>`).join('');
+}
+
+/* ══ 서명 패드 ══ */
+let sigCanvas,sigCtx,sigDrawing=false,sigHas=false;
+function initSig(){
+  sigCanvas=document.getElementById('sigCanvas');
+  sigCtx=sigCanvas.getContext('2d');
+  resizeSig();
+  window.addEventListener('resize',resizeSig);
+  sigCanvas.addEventListener('pointerdown',e=>{
+    sigDrawing=true;sigHas=true;
+    document.getElementById('sigPh').style.display='none';
+    document.getElementById('sigBox').classList.add('active');
+    const p=sigPt(e);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y);
+    sigCanvas.setPointerCapture(e.pointerId);
+  });
+  sigCanvas.addEventListener('pointermove',e=>{if(!sigDrawing)return;const p=sigPt(e);sigCtx.lineTo(p.x,p.y);sigCtx.stroke();});
+  ['pointerup','pointercancel'].forEach(ev=>sigCanvas.addEventListener(ev,()=>sigDrawing=false));
+}
+function resizeSig(){
+  const r=sigCanvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+  const img=sigHas?sigCanvas.toDataURL():null;
+  sigCanvas.width=r.width*dpr;sigCanvas.height=160*dpr;
+  sigCtx.scale(dpr,dpr);
+  sigCtx.lineWidth=2;sigCtx.lineCap='round';sigCtx.lineJoin='round';sigCtx.strokeStyle='#0E1F16';
+  if(img){const i=new Image();i.onload=()=>sigCtx.drawImage(i,0,0,r.width,160);i.src=img;}
+}
+function sigPt(e){const r=sigCanvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+function clearSig(){
+  sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);sigHas=false;
+  document.getElementById('sigPh').style.display='flex';
+  document.getElementById('sigBox').classList.remove('active');
+}
+
+/* ══ 입력 마스킹 ══ */
+function bindInputMasks(){
+  document.getElementById('fPhone').addEventListener('input',e=>{
+    let v=e.target.value.replace(/\D/g,'').slice(0,11);
+    if(v.length>7)v=v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7);
+    else if(v.length>3)v=v.slice(0,3)+'-'+v.slice(3);
+    e.target.value=v;
+  });
+  document.getElementById('fBirth').addEventListener('input',e=>{
+    let v=e.target.value.replace(/\D/g,'').slice(0,8);
+    if(v.length>6)v=v.slice(0,4)+'-'+v.slice(4,6)+'-'+v.slice(6);
+    else if(v.length>4)v=v.slice(0,4)+'-'+v.slice(4);
+    e.target.value=v;
+  });
+}
+
+/* ══ 위임장 제출 ══ */
+async function submitDelegate(){
+  const name=gv('fName'),birth=gv('fBirth'),dong=gv('fDong');
+  const ho=gv('fHo').replace(/\D/g,''),phone=gv('fPhone');
+  const agree=rv('fAgree'),priv=rv('fPriv');
+  if(!name)return toast('성명을 입력해 주세요');
+  if(!birth)return toast('생년월일을 입력해 주세요');
+  if(!ho)return toast('호수를 입력해 주세요');
+  if(phone.length<12)return toast('연락처를 정확히 입력해 주세요');
+  if(!priv)return toast('개인정보 동의 여부를 선택해 주세요');
+  if(!sigHas)return toast('자필 서명이 필요합니다');
+  const key=dong+'-'+ho;
+  if(DATA[key]&&!confirm(dong+'동 '+ho+'호는 이미 접수되어 있습니다. 교체할까요?'))return;
+  const rec={name,birth,dong,ho,phone,agree,priv,sig:sc2.toDataURL('image/png'),ts:new Date().toISOString()};
+  const btn=document.querySelector('.btn-primary[onclick*="submitDelegate"],button[onclick="submitDelegate()"]');
+  if(btn){btn.disabled=true;btn.textContent='저장 중…';}
+  try{
+    await saveToGH(rec);
+    toast('✅ GitHub에 저장되었습니다');
+  }catch(e){
+    toast('⚠️ 오프라인 저장됨 (나중에 동기화 필요)');
+    console.warn('GH 저장 실패:',e);
+  }
+  DATA[key]=rec;
+  await S.s('tp_data',DATA);
+  lastRec=rec;
+  if(btn){btn.disabled=false;btn.textContent='위임장 제출하기 →';}
+  document.getElementById('delegateForm').style.display='none';
+  document.getElementById('delegateDone').style.display='block';
+  document.getElementById('doneMsg').textContent=
+    CFG.aptName+' '+dong+'동 '+ho+'호 · '+name+' 님의 위임장('+agree+')이 접수되었습니다.';
+  renderAll();if(unlocked)refreshAdminAll();
+}
+
