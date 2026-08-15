@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PICKPLAY 관리자</title>
+<style>
+:root{
+  --brand:#1B5FE0; --brand2:#3B7BFF; --brand-soft:#EAF1FF;
+  --accent:#00B8A9; --accent-soft:#E3FBF8;
+  --gold:#E0A82E; --gold-soft:#FFF6E0;
+  --ink:#111827; --ink2:#374151; --ink3:#6B7280; --ink4:#9CA3AF; --ink5:#E5E7EB;
+  --bg:#F4F6FB; --surface:#FFFFFF; --surface2:#F8FAFC;
+  --border:#E7EAF1;
+  --red:#E0473F; --red-soft:#FDECEB;
+  --green:#1BA672; --green-soft:#E7F8F1;
+  --r:12px; --r-sm:8px; --r-lg:18px;
+  --sh:0 1px 3px rgba(17,24,39,.06),0 1px 2px rgba(17,24,39,.04);
+  --sh-md:0 10px 30px rgba(17,24,39,.10);
+  --font:-apple-system,'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --tr:.18s cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+button,input,select{font-family:var(--font);font-size:14px}
+button{cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--ink5);border-radius:4px}
+
+.notice{background:#3A2A00;color:#FFE9B3;font-size:12px;text-align:center;padding:8px 16px;line-height:1.5}
+.notice b{color:#fff}
+
+header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.header-inner{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;color:var(--brand)}
+.logo .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--brand2),var(--accent))}
+.logo .tag{font-size:11px;font-weight:700;color:var(--ink4);background:var(--surface2);border:1px solid var(--border);padding:2px 8px;border-radius:6px;margin-left:4px}
+.back-link{font-size:12.5px;font-weight:700;color:var(--ink3);border:1px solid var(--border);border-radius:999px;padding:7px 14px}
+.back-link:hover{color:var(--brand);border-color:var(--brand2)}
+
+nav.tabs{max-width:1080px;margin:0 auto;padding:0 20px;display:flex;gap:4px;border-bottom:1px solid var(--border);overflow-x:auto}
+nav.tabs button{padding:13px 16px;font-weight:700;font-size:14px;color:var(--ink3);border-bottom:2px solid transparent;white-space:nowrap;transition:var(--tr)}
+nav.tabs button.on{color:var(--brand);border-bottom-color:var(--brand)}
+nav.tabs button:hover{color:var(--brand2)}
+
+.wrap{max-width:1080px;margin:0 auto;padding:22px 20px 80px}
+.view{display:none;animation:fade .25s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:12px;flex-wrap:wrap}
+.section-head h2{font-size:16px}
+.section-head .desc{font-size:12.5px;color:var(--ink4);margin-top:2px}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;box-shadow:var(--sh);margin-bottom:16px}
+.card h3{font-size:14px;margin-bottom:14px}
+
+.btn{border-radius:var(--r-sm);padding:9px 16px;font-weight:700;font-size:13px;transition:var(--tr)}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand2)}
+.btn-ghost{background:var(--surface2);color:var(--ink2);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--brand2);color:var(--brand)}
+.btn-danger{background:var(--red-soft);color:var(--red)}
+.btn-danger:hover{background:var(--red);color:#fff}
+.btn-sm{padding:6px 11px;font-size:12px}
+.btn:disabled{opacity:.4;cursor:default}
+
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh)}
+.stat-card .lab{font-size:11.5px;color:var(--ink4);font-weight:700;margin-bottom:5px}
+.stat-card .val{font-size:19px;font-weight:800}
+
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:700;color:var(--ink3)}
+.field input,.field select{border:1.5px solid var(--border);border-radius:var(--r-sm);padding:9px 11px;font-size:13.5px}
+.field input:focus,.field select:focus{outline:none;border-color:var(--brand2)}
+.field.wide{grid-column:1/-1}
+.form-actions{display:flex;gap:10px;margin-top:16px}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11.5px;color:var(--ink4);font-weight:700;padding:9px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:11px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--sh)}
+.table-wrap table{min-width:640px}
+
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700}
+.pill.upcoming{background:var(--accent-soft);color:var(--accent)}
+.pill.finished{background:var(--surface2);color:var(--ink4);border:1px solid var(--border)}
+.pill.win{background:var(--green-soft);color:var(--green)}
+.pill.lose{background:var(--red-soft);color:var(--red)}
+.pill.pending{background:var(--gold-soft);color:#8A6100}
+
+.mini-select{border:1.5px solid var(--border);border-radius:6px;padding:5px 7px;font-size:12px}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--ink4);font-size:13px}
+
+.adjust-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.adjust-row input{width:110px;border:1.5px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-size:13px}
+
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:13px;font-weight:600;box-shadow:var(--sh-md);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:900;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.hint{font-size:11.5px;color:var(--ink4);margin-top:8px;line-height:1.6}
+.divider{height:1px;background:var(--border);margin:18px 0}
+
+@media(max-width:640px){
+  .header-inner{padding:12px 14px}
+  .wrap{padding:16px 14px 70px}
+}
+</style>
+</head>
+<body>
+
+<div class="notice">⚙️ 관리자 페이지 · 이 브라우저의 <b>localStorage</b>에 저장된 데모 데이터를 관리합니다. 실제 로그인/권한 검증은 없는 데모용 화면입니다.</div>
+
+<header>
+  <div class="header-inner">
+    <div class="logo"><span class="dot"></span>PICKPLAY<span class="tag">ADMIN</span></div>
+    <a class="back-link" href="index.html">← 플레이 화면으로</a>
+  </div>
+  <nav class="tabs">
+    <button class="on" data-tab="matches" onclick="switchTab('matches')">경기 관리</button>
+    <button data-tab="points" onclick="switchTab('points')">포인트 관리</button>
+    <button data-tab="bets" onclick="switchTab('bets')">배팅 관리</button>
+    <button data-tab="settings" onclick="switchTab('settings')">설정</button>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <!-- ===== 경기 관리 ===== -->
+  <div class="view on" id="view-matches">
+    <div class="card">
+      <h3 id="matchFormTitle">새 경기 추가</h3>
+      <div class="form-grid">
+        <div class="field">
+          <label>종목</label>
+          <select id="f-sport" onchange="onSportChange()">
+            <option value="soccer">⚽ 축구 (승/무/패)</option>
+            <option value="baseball">⚾ 야구 (승/패)</option>
+            <option value="esports">🎮 e스포츠 (승/패)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>리그</label>
+          <input id="f-league" placeholder="예: K리그1">
+        </div>
+        <div class="field">
+          <label>일시</label>
+          <input id="f-kickoff" type="datetime-local">
+        </div>
+        <div class="field">
+          <label>홈팀</label>
+          <input id="f-home" placeholder="예: FC서울">
+        </div>
+        <div class="field">
+          <label>원정팀</label>
+          <input id="f-away" placeholder="예: 울산HD">
+        </div>
+        <div class="field">
+          <label>홈 배율</label>
+          <input id="f-odds-home" type="number" step="0.01" min="1.01" value="2.00">
+        </div>
+        <div class="field" id="f-draw-wrap">
+          <label>무 배율</label>
+          <input id="f-odds-draw" type="number" step="0.01" min="1.01" value="3.20">
+        </div>
+        <div class="field">
+          <label>원정 배율</label>
+          <input id="f-odds-away" type="number" step="0.01" min="1.01" value="2.00">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" id="matchSubmitBtn" onclick="submitMatchForm()">경기 추가</button>
+        <button class="btn btn-ghost" id="matchCancelBtn" style="display:none" onclick="resetMatchForm()">취소</button>
+      </div>
+      <div class="hint" id="matchFormErr" style="color:var(--red);display:none"></div>
+    </div>
+
+    <div class="section-head">
+      <div>
+        <h2>등록된 경기 (<span id="matchCount">0</span>)</h2>
+        <div class="desc">결과를 확정하면 해당 경기에 예측한 플레이어의 포인트가 자동 정산됩니다.</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>종목/리그</th><th>대진</th><th>일시</th><th>배율</th><th>상태</th><th>결과 설정</th><th>관리</th>
+        </tr></thead>
+        <tbody id="matchTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 포인트 관리 ===== -->
+  <div class="view" id="view-points">
+    <div class="card">
+      <h3>현재 플레이어</h3>
+      <div id="playerPointBlock"></div>
+    </div>
+    <div class="section-head">
+      <div>
+        <h2>봇 플레이어 (리더보드)</h2>
+        <div class="desc">리더보드에 함께 표시되는 가상 경쟁 플레이어입니다.</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="addBot()">+ 봇 추가</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>이름</th><th>보유 포인트</th><th>포인트 조정</th><th>관리</th></tr></thead>
+        <tbody id="botTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 배팅 관리 ===== -->
+  <div class="view" id="view-bets">
+    <div class="stat-row" id="betStats"></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>경기</th><th>예측</th><th>스테이크</th><th>배율</th><th>결과</th><th>손익</th><th>관리</th></tr></thead>
+        <tbody id="betTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 설정 ===== -->
+  <div class="view" id="view-settings">
+    <div class="card">
+      <h3>게임 기본 설정</h3>
+      <div class="form-grid">
+        <div class="field">
+          <label>신규 플레이어 시작 포인트</label>
+          <input id="s-startingBalance" type="number" min="0" step="100">
+        </div>
+        <div class="field">
+          <label>최소 베팅 포인트</label>
+          <input id="s-minStake" type="number" min="1" step="10">
+        </div>
+        <div class="field">
+          <label>최대 베팅 포인트</label>
+          <input id="s-maxStake" type="number" min="1" step="100">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="saveSettingsForm()">설정 저장</button>
+      </div>
+      <div class="hint">설정은 이후 신규 예측/신규 플레이어부터 적용되며, 기존 플레이어의 보유 포인트를 소급 변경하지 않습니다.</div>
+    </div>
+
+    <div class="card">
+      <h3 style="color:var(--red)">위험 구역</h3>
+      <p class="hint" style="margin-bottom:12px">아래 작업은 되돌릴 수 없습니다. 이 브라우저에 저장된 모든 PICKPLAY 데이터(경기·포인트·베팅 기록·설정)가 삭제됩니다.</p>
+      <button class="btn btn-danger" onclick="factoryReset()">전체 데이터 초기화</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE_KEY = 'pickplay_state_v1';
+const MATCHES_KEY = 'pickplay_matches_v1';
+const SETTINGS_KEY = 'pickplay_settings_v1';
+const DEFAULT_SETTINGS = {startingBalance:10000, minStake:100, maxStake:100000};
+
+const DEFAULT_MATCHES = [
+  {id:'m1', sport:'soccer', league:'K리그1', home:'FC서울', away:'울산HD', kickoff:'2026-08-15 19:00', odds:{home:2.4, draw:3.1, away:2.6}},
+  {id:'m2', sport:'soccer', league:'K리그1', home:'전북현대', away:'포항스틸러스', kickoff:'2026-08-16 18:30', odds:{home:1.9, draw:3.3, away:3.6}},
+  {id:'m3', sport:'soccer', league:'K리그1', home:'광주FC', away:'대전하나시티즌', kickoff:'2026-08-16 19:30', odds:{home:2.1, draw:3.0, away:3.2}},
+  {id:'m4', sport:'baseball', league:'KBO', home:'LG트윈스', away:'KIA타이거즈', kickoff:'2026-08-15 18:30', odds:{home:1.75, away:2.1}},
+  {id:'m5', sport:'baseball', league:'KBO', home:'두산베어스', away:'삼성라이온즈', kickoff:'2026-08-15 18:30', odds:{home:2.0, away:1.85}},
+  {id:'m6', sport:'baseball', league:'KBO', home:'SSG랜더스', away:'NC다이노스', kickoff:'2026-08-16 17:00', odds:{home:1.95, away:1.9}},
+  {id:'m7', sport:'baseball', league:'KBO', home:'롯데자이언츠', away:'키움히어로즈', kickoff:'2026-08-17 17:00', odds:{home:1.7, away:2.2}},
+  {id:'m8', sport:'esports', league:'LCK', home:'T1', away:'Gen.G', kickoff:'2026-08-17 17:00', odds:{home:2.2, away:1.7}},
+  {id:'m9', sport:'esports', league:'LCK', home:'KT롤스터', away:'DRX', kickoff:'2026-08-17 20:00', odds:{home:1.6, away:2.4}},
+  {id:'m10', sport:'esports', league:'LCK', home:'한화생명e스포츠', away:'디플러스기아', kickoff:'2026-08-18 17:00', odds:{home:2.5, away:1.55}},
+  {id:'m11', sport:'soccer', league:'K리그1', home:'울산HD', away:'포항스틸러스', kickoff:'2026-08-18 19:00', odds:{home:1.85, draw:3.2, away:4.0}},
+  {id:'m12', sport:'baseball', league:'KBO', home:'KIA타이거즈', away:'SSG랜더스', kickoff:'2026-08-18 18:30', odds:{home:1.8, away:2.05}},
+];
+
+let state = null;
+let MATCHES = [];
+let editingMatchId = null;
+
+/* ===================== 로드/저장 ===================== */
+function loadSettings(){
+  try{
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if(raw) return {...DEFAULT_SETTINGS, ...JSON.parse(raw)};
+  }catch(e){}
+  return {...DEFAULT_SETTINGS};
+}
+function saveSettings(s){ localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
+
+function loadMatches(){
+  try{
+    const raw = localStorage.getItem(MATCHES_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  const seeded = DEFAULT_MATCHES.map(m=>({...m, result:null}));
+  localStorage.setItem(MATCHES_KEY, JSON.stringify(seeded));
+  return seeded;
+}
+function saveMatches(m){ localStorage.setItem(MATCHES_KEY, JSON.stringify(m)); }
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return null;
+}
+function saveState(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+/* ===================== 토스트 ===================== */
+let toastTimer = null;
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> el.classList.remove('on'), 2200);
+}
+
+/* ===================== 탭 ===================== */
+function switchTab(tab){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.tab===tab));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.getElementById('view-'+tab).classList.add('on');
+  refreshAll();
+}
+
+/* ===================== 경기 관리 ===================== */
+function outcomeLabel(sport, key, home, away){
+  if(key==='home') return home;
+  if(key==='away') return away;
+  return '무승부';
+}
+
+function onSportChange(){
+  const isSoccer = document.getElementById('f-sport').value==='soccer';
+  document.getElementById('f-draw-wrap').style.display = isSoccer ? '' : 'none';
+}
+
+function resetMatchForm(){
+  editingMatchId = null;
+  document.getElementById('matchFormTitle').textContent = '새 경기 추가';
+  document.getElementById('matchSubmitBtn').textContent = '경기 추가';
+  document.getElementById('matchCancelBtn').style.display = 'none';
+  document.getElementById('f-sport').value = 'soccer';
+  document.getElementById('f-league').value = '';
+  document.getElementById('f-kickoff').value = '';
+  document.getElementById('f-home').value = '';
+  document.getElementById('f-away').value = '';
+  document.getElementById('f-odds-home').value = '2.00';
+  document.getElementById('f-odds-draw').value = '3.20';
+  document.getElementById('f-odds-away').value = '2.00';
+  document.getElementById('matchFormErr').style.display = 'none';
+  onSportChange();
+}
+
+function editMatch(id){
+  const m = MATCHES.find(x=>x.id===id);
+  if(!m) return;
+  editingMatchId = id;
+  document.getElementById('matchFormTitle').textContent = '경기 수정';
+  document.getElementById('matchSubmitBtn').textContent = '수정 저장';
+  document.getElementById('matchCancelBtn').style.display = '';
+  document.getElementById('f-sport').value = m.sport;
+  document.getElementById('f-league').value = m.league;
+  document.getElementById('f-kickoff').value = (m.kickoff||'').replace(' ','T');
+  document.getElementById('f-home').value = m.home;
+  document.getElementById('f-away').value = m.away;
+  document.getElementById('f-odds-home').value = m.odds.home;
+  document.getElementById('f-odds-draw').value = m.odds.draw||3.2;
+  document.getElementById('f-odds-away').value = m.odds.away;
+  onSportChange();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function submitMatchForm(){
+  const errEl = document.getElementById('matchFormErr');
+  errEl.style.display = 'none';
+  const sport = document.getElementById('f-sport').value;
+  const league = document.getElementById('f-league').value.trim();
+  const kickoffRaw = document.getElementById('f-kickoff').value;
+  const home = document.getElementById('f-home').value.trim();
+  const away = document.getElementById('f-away').value.trim();
+  const oddsHome = Number(document.getElementById('f-odds-home').value);
+  const oddsDraw = Number(document.getElementById('f-odds-draw').value);
+  const oddsAway = Number(document.getElementById('f-odds-away').value);
+
+  if(!league || !home || !away || !kickoffRaw){
+    errEl.textContent = '리그, 일시, 홈팀, 원정팀을 모두 입력해주세요.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if(home===away){
+    errEl.textContent = '홈팀과 원정팀은 같을 수 없습니다.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if(oddsHome<1.01 || oddsAway<1.01 || (sport==='soccer' && oddsDraw<1.01)){
+    errEl.textContent = '배율은 1.01 이상이어야 합니다.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const odds = sport==='soccer' ? {home:oddsHome, draw:oddsDraw, away:oddsAway} : {home:oddsHome, away:oddsAway};
+  const kickoff = kickoffRaw.replace('T',' ');
+
+  if(editingMatchId){
+    const m = MATCHES.find(x=>x.id===editingMatchId);
+    Object.assign(m, {sport, league, home, away, kickoff, odds});
+    showToast('경기 정보를 수정했습니다.');
+  } else {
+    MATCHES.unshift({id:'m'+Date.now(), sport, league, home, away, kickoff, odds, result:null});
+    showToast('새 경기를 추가했습니다.');
+  }
+  saveMatches(MATCHES);
+  resetMatchForm();
+  renderMatches();
+}
+
+function deleteMatch(id){
+  if(!confirm('이 경기를 삭제할까요? 관련된 베팅 기록은 남지만 더 이상 정산되지 않습니다.')) return;
+  MATCHES = MATCHES.filter(m=>m.id!==id);
+  saveMatches(MATCHES);
+  renderMatches();
+  showToast('경기를 삭제했습니다.');
+}
+
+function setMatchResult(id){
+  const sel = document.getElementById('result-select-'+id);
+  const val = sel.value;
+  if(!val) return;
+  const m = MATCHES.find(x=>x.id===id);
+  m.result = val;
+  saveMatches(MATCHES);
+  settleAllPending();
+  renderMatches();
+  showToast(`결과가 확정되어 관련 예측이 정산되었습니다. (${outcomeLabel(m.sport, val, m.home, m.away)})`);
+}
+
+function clearMatchResult(id){
+  const m = MATCHES.find(x=>x.id===id);
+  if(!m) return;
+  if(!confirm('결과를 초기화하면 경기가 다시 "예측 가능" 상태가 됩니다. 이미 정산된 베팅은 되돌리지 않습니다. 계속할까요?')) return;
+  m.result = null;
+  saveMatches(MATCHES);
+  renderMatches();
+  showToast('결과를 초기화했습니다.');
+}
+
+function renderMatches(){
+  document.getElementById('matchCount').textContent = MATCHES.length;
+  const body = document.getElementById('matchTableBody');
+  if(MATCHES.length===0){
+    body.innerHTML = `<tr><td colspan="7"><div class="empty-state">등록된 경기가 없습니다. 위 폼에서 새 경기를 추가해보세요.</div></td></tr>`;
+    return;
+  }
+  body.innerHTML = MATCHES.map(m=>{
+    const isSoccer = m.sport==='soccer';
+    const oddsText = isSoccer
+      ? `홈 ${m.odds.home.toFixed(2)} · 무 ${m.odds.draw.toFixed(2)} · 원정 ${m.odds.away.toFixed(2)}`
+      : `홈 ${m.odds.home.toFixed(2)} · 원정 ${m.odds.away.toFixed(2)}`;
+    const keys = isSoccer ? ['home','draw','away'] : ['home','away'];
+    const options = keys.map(k=>`<option value="${k}" ${m.result===k?'selected':''}>${outcomeLabel(m.sport,k,m.home,m.away)}</option>`).join('');
+    return `<tr>
+      <td>${m.sport==='soccer'?'⚽':m.sport==='baseball'?'⚾':'🎮'} ${m.league}</td>
+      <td><b>${m.home}</b> vs <b>${m.away}</b></td>
+      <td>${m.kickoff}</td>
+      <td>${oddsText}</td>
+      <td>${m.result ? `<span class="pill finished">종료</span>` : `<span class="pill upcoming">예정</span>`}</td>
+      <td>
+        <div class="row-actions">
+          <select class="mini-select" id="result-select-${m.id}" ${m.result?'disabled':''}>
+            <option value="">선택</option>
+            ${options}
+          </select>
+          ${m.result
+            ? `<button class="btn btn-ghost btn-sm" onclick="clearMatchResult('${m.id}')">초기화</button>`
+            : `<button class="btn btn-primary btn-sm" onclick="setMatchResult('${m.id}')">확정</button>`}
+        </div>
+      </td>
+      <td>
+        <div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick="editMatch('${m.id}')">수정</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteMatch('${m.id}')">삭제</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+/* ===================== 정산(경기 결과 확정 시 대기중 베팅 처리) ===================== */
+function settleAllPending(){
+  if(!state) return;
+  let changed = false;
+  state.history.forEach(h=>{
+    if(h.result==='pending'){
+      const m = MATCHES.find(x=>x.id===h.matchId);
+      if(m && m.result){
+        if(h.pick===m.result){
+          h.result = 'win';
+          h.delta = Math.floor(h.stake*h.multiplier);
+          state.balance += h.delta;
+        } else {
+          h.result = 'lose';
+          h.delta = -h.stake;
+        }
+        changed = true;
+      }
+    }
+  });
+  if(changed) saveState();
+}
+
+/* ===================== 포인트 관리 ===================== */
+function renderPoints(){
+  const block = document.getElementById('playerPointBlock');
+  if(!state || !state.nickname){
+    block.innerHTML = `<div class="empty-state">아직 플레이어가 없습니다. 플레이 화면에서 닉네임을 먼저 만들어주세요.</div>`;
+  } else {
+    block.innerHTML = `
+      <div class="stat-row" style="margin-bottom:14px">
+        <div class="stat-card"><div class="lab">닉네임</div><div class="val" style="font-size:16px">${state.nickname}</div></div>
+        <div class="stat-card"><div class="lab">보유 포인트</div><div class="val" style="color:var(--brand)">${state.balance.toLocaleString()}P</div></div>
+        <div class="stat-card"><div class="lab">총 예측 수</div><div class="val">${state.history.length}</div></div>
+      </div>
+      <div class="adjust-row">
+        <input type="number" id="playerAdjustAmt" placeholder="포인트" min="0" step="100">
+        <button class="btn btn-primary btn-sm" onclick="adjustPlayerPoints(1)">+ 지급</button>
+        <button class="btn btn-danger btn-sm" onclick="adjustPlayerPoints(-1)">- 차감</button>
+        <button class="btn btn-ghost btn-sm" onclick="resetPlayerPoints()">시작 포인트로 초기화</button>
+      </div>
+    `;
+  }
+
+  const botBody = document.getElementById('botTableBody');
+  if(!state || !state.bots || state.bots.length===0){
+    botBody.innerHTML = `<tr><td colspan="4"><div class="empty-state">봇 플레이어가 없습니다.</div></td></tr>`;
+    return;
+  }
+  botBody.innerHTML = state.bots.map((b,i)=>`
+    <tr>
+      <td><b>${b.name}</b></td>
+      <td>${b.balance.toLocaleString()}P</td>
+      <td>
+        <div class="adjust-row">
+          <input type="number" id="bot-adjust-${i}" placeholder="포인트" min="0" step="100" style="width:90px">
+          <button class="btn btn-ghost btn-sm" onclick="adjustBotPoints(${i},1)">+</button>
+          <button class="btn btn-ghost btn-sm" onclick="adjustBotPoints(${i},-1)">-</button>
+        </div>
+      </td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteBot(${i})">삭제</button></td>
+    </tr>
+  `).join('');
+}
+
+function adjustPlayerPoints(sign){
+  if(!state || !state.nickname){ showToast('플레이어가 없습니다.'); return; }
+  const amt = Number(document.getElementById('playerAdjustAmt').value)||0;
+  if(amt<=0){ showToast('조정할 포인트를 입력해주세요.'); return; }
+  state.balance = Math.max(0, state.balance + sign*amt);
+  saveState();
+  renderPoints();
+  showToast(sign>0 ? `${amt.toLocaleString()}P 지급했습니다.` : `${amt.toLocaleString()}P 차감했습니다.`);
+}
+
+function resetPlayerPoints(){
+  if(!state) return;
+  const settings = loadSettings();
+  if(!confirm(`보유 포인트를 시작 포인트(${settings.startingBalance.toLocaleString()}P)로 초기화할까요?`)) return;
+  state.balance = settings.startingBalance;
+  saveState();
+  renderPoints();
+  showToast('포인트를 초기화했습니다.');
+}
+
+function adjustBotPoints(i, sign){
+  const amt = Number(document.getElementById('bot-adjust-'+i).value)||0;
+  if(amt<=0){ showToast('조정할 포인트를 입력해주세요.'); return; }
+  state.bots[i].balance = Math.max(0, state.bots[i].balance + sign*amt);
+  saveState();
+  renderPoints();
+}
+
+function deleteBot(i){
+  if(!confirm(`"${state.bots[i].name}" 봇을 삭제할까요?`)) return;
+  state.bots.splice(i,1);
+  saveState();
+  renderPoints();
+}
+
+function addBot(){
+  const name = prompt('새 봇 플레이어의 이름을 입력하세요 (최대 10자)');
+  if(!name) return;
+  const trimmed = name.trim().slice(0,10);
+  if(!trimmed) return;
+  if(!state) return;
+  state.bots.push({name:trimmed, avatar:trimmed.slice(0,1), balance:10000, wins:0, total:0});
+  saveState();
+  renderPoints();
+  showToast('봇을 추가했습니다.');
+}
+
+/* ===================== 배팅 관리 ===================== */
+function renderBets(){
+  const statEl = document.getElementById('betStats');
+  const body = document.getElementById('betTableBody');
+  if(!state || state.history.length===0){
+    statEl.innerHTML = '';
+    body.innerHTML = `<tr><td colspan="7"><div class="empty-state">베팅 기록이 없습니다.</div></td></tr>`;
+    return;
+  }
+  const pending = state.history.filter(h=>h.result==='pending');
+  const wins = state.history.filter(h=>h.result==='win');
+  const exposure = pending.reduce((s,h)=>s+h.stake,0);
+  statEl.innerHTML = `
+    <div class="stat-card"><div class="lab">총 베팅 수</div><div class="val">${state.history.length}</div></div>
+    <div class="stat-card"><div class="lab">대기중 베팅</div><div class="val">${pending.length}</div></div>
+    <div class="stat-card"><div class="lab">대기중 스테이크 합계</div><div class="val">${exposure.toLocaleString()}P</div></div>
+    <div class="stat-card"><div class="lab">적중률</div><div class="val">${state.history.length? Math.round(wins.length/state.history.length*100):0}%</div></div>
+  `;
+  body.innerHTML = state.history.map(h=>{
+    const pillCls = h.result==='win'?'win':h.result==='lose'?'lose':'pending';
+    const pillText = h.result==='win'?'적중':h.result==='lose'?'실패':'대기중';
+    const deltaText = h.result==='pending' ? '-' : (h.delta>0?'+':'')+h.delta.toLocaleString()+'P';
+    return `<tr>
+      <td>${h.matchLabel}</td>
+      <td>${h.pickLabel}</td>
+      <td>${h.stake.toLocaleString()}P</td>
+      <td>${h.multiplier.toFixed(2)}배</td>
+      <td><span class="pill ${pillCls}">${pillText}</span></td>
+      <td>${deltaText}</td>
+      <td>
+        <div class="row-actions">
+          ${h.result==='pending' ? `<button class="btn btn-ghost btn-sm" onclick="voidBet('${h.id}')">취소(환불)</button>` : ''}
+          <button class="btn btn-danger btn-sm" onclick="deleteBet('${h.id}')">삭제</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function voidBet(id){
+  const h = state.history.find(x=>x.id===id);
+  if(!h || h.result!=='pending') return;
+  if(!confirm('이 베팅을 취소하고 스테이크를 환불할까요?')) return;
+  state.balance += h.stake;
+  state.history = state.history.filter(x=>x.id!==id);
+  saveState();
+  renderBets();
+  showToast('베팅을 취소하고 환불했습니다.');
+}
+
+function deleteBet(id){
+  if(!confirm('이 베팅 기록을 삭제할까요? (포인트는 환불되지 않습니다)')) return;
+  state.history = state.history.filter(x=>x.id!==id);
+  saveState();
+  renderBets();
+}
+
+/* ===================== 설정 ===================== */
+function renderSettings(){
+  const s = loadSettings();
+  document.getElementById('s-startingBalance').value = s.startingBalance;
+  document.getElementById('s-minStake').value = s.minStake;
+  document.getElementById('s-maxStake').value = s.maxStake;
+}
+
+function saveSettingsForm(){
+  const startingBalance = Number(document.getElementById('s-startingBalance').value);
+  const minStake = Number(document.getElementById('s-minStake').value);
+  const maxStake = Number(document.getElementById('s-maxStake').value);
+  if(startingBalance<0 || minStake<1 || maxStake<minStake){
+    showToast('설정 값을 확인해주세요 (최대 베팅 ≥ 최소 베팅).');
+    return;
+  }
+  saveSettings({startingBalance, minStake, maxStake});
+  showToast('설정을 저장했습니다.');
+}
+
+function factoryReset(){
+  if(!confirm('정말로 모든 데이터를 초기화할까요? 경기, 포인트, 베팅 기록, 설정이 모두 삭제되며 되돌릴 수 없습니다.')) return;
+  localStorage.removeItem(STORE_KEY);
+  localStorage.removeItem(MATCHES_KEY);
+  localStorage.removeItem(SETTINGS_KEY);
+  showToast('모든 데이터를 초기화했습니다.');
+  setTimeout(()=>location.reload(), 600);
+}
+
+/* ===================== 전체 렌더 ===================== */
+function refreshAll(){
+  state = loadState();
+  MATCHES = loadMatches();
+  if(!state){
+    state = {nickname:'', balance:0, history:[], bots:[]};
+  }
+  renderMatches();
+  renderPoints();
+  renderBets();
+  renderSettings();
+}
+
+resetMatchForm();
+refreshAll();
+</script>
+</body>
+</html>

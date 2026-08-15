@@ -259,6 +259,10 @@ nav.tabs button:hover{color:var(--brand2)}
         <li>본 서비스는 오락 목적이며 사행성 콘텐츠가 아닙니다.</li>
       </ul>
     </div>
+    <div class="about-card">
+      <h3>운영자이신가요?</h3>
+      <p>경기 정보 등록, 포인트 지급/차감, 베팅 내역 관리, 시작 포인트·베팅 한도 설정은 <a href="admin.html" style="color:var(--brand);font-weight:700;text-decoration:underline">⚙ 관리자 페이지</a>에서 할 수 있습니다.</p>
+    </div>
   </div>
 
 </div>
@@ -301,7 +305,7 @@ const SPORTS = [
   {key:'esports', label:'🎮 e스포츠'},
 ];
 
-const MATCHES = [
+const DEFAULT_MATCHES = [
   {id:'m1', sport:'soccer', league:'K리그1', home:'FC서울', away:'울산HD', kickoff:'2026-08-15 19:00', odds:{home:2.4, draw:3.1, away:2.6}},
   {id:'m2', sport:'soccer', league:'K리그1', home:'전북현대', away:'포항스틸러스', kickoff:'2026-08-16 18:30', odds:{home:1.9, draw:3.3, away:3.6}},
   {id:'m3', sport:'soccer', league:'K리그1', home:'광주FC', away:'대전하나시티즌', kickoff:'2026-08-16 19:30', odds:{home:2.1, draw:3.0, away:3.2}},
@@ -316,9 +320,14 @@ const MATCHES = [
   {id:'m12', sport:'baseball', league:'KBO', home:'KIA타이거즈', away:'SSG랜더스', kickoff:'2026-08-18 18:30', odds:{home:1.8, away:2.05}},
 ];
 
-/* ===================== 상태 ===================== */
+/* ===================== 공용 저장소 (경기·설정은 관리자 페이지와 공유) ===================== */
 const STORE_KEY = 'pickplay_state_v1';
+const MATCHES_KEY = 'pickplay_matches_v1';
+const SETTINGS_KEY = 'pickplay_settings_v1';
+const DEFAULT_SETTINGS = {startingBalance:10000, minStake:100, maxStake:100000};
+
 let state = null;
+let MATCHES = [];
 let currentSport = 'all';
 let modalCtx = null;
 
@@ -331,12 +340,32 @@ const BOTS_SEED = [
   {name:'K리그마스터', avatar:'마'},
 ];
 
-function defaultState(){
+function loadSettings(){
+  try{
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if(raw) return {...DEFAULT_SETTINGS, ...JSON.parse(raw)};
+  }catch(e){}
+  return {...DEFAULT_SETTINGS};
+}
+
+function loadMatches(){
+  try{
+    const raw = localStorage.getItem(MATCHES_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  const seeded = DEFAULT_MATCHES.map(m=>({...m, result:null}));
+  localStorage.setItem(MATCHES_KEY, JSON.stringify(seeded));
+  return seeded;
+}
+function saveMatches(matches){
+  localStorage.setItem(MATCHES_KEY, JSON.stringify(matches));
+}
+
+function defaultState(settings){
   return {
     nickname: '',
-    balance: 10000,
+    balance: settings.startingBalance,
     history: [], // {id, matchId, pick, stake, multiplier, result:'pending'|'win'|'lose', delta}
-    resolved: {}, // matchId -> pick result key
     bots: BOTS_SEED.map(b=>({...b, balance: 8000 + Math.floor(Math.random()*6000), wins:Math.floor(Math.random()*8), total:Math.floor(6+Math.random()*10)})),
   };
 }
@@ -352,10 +381,34 @@ function saveState(){
   localStorage.setItem(STORE_KEY, JSON.stringify(state));
 }
 
+/* ===================== 경기 결과가 반영된 대기중 예측 정산 ===================== */
+function settlePendingPredictions(){
+  let changed = false;
+  state.history.forEach(h=>{
+    if(h.result==='pending'){
+      const m = MATCHES.find(x=>x.id===h.matchId);
+      if(m && m.result){
+        if(h.pick===m.result){
+          h.result = 'win';
+          h.delta = Math.floor(h.stake*h.multiplier);
+          state.balance += h.delta;
+        } else {
+          h.result = 'lose';
+          h.delta = -h.stake;
+        }
+        changed = true;
+      }
+    }
+  });
+  if(changed) saveState();
+}
+
 /* ===================== 초기화 / 게이트 ===================== */
 function init(){
   state = loadState();
+  MATCHES = loadMatches();
   if(state && state.nickname){
+    settlePendingPredictions();
     document.getElementById('gate').style.display = 'none';
     renderAll();
   } else {
@@ -367,7 +420,7 @@ function init(){
 function startGame(){
   const val = document.getElementById('nickInput').value.trim();
   const nickname = val || ('게스트' + Math.floor(1000+Math.random()*9000));
-  state = defaultState();
+  state = defaultState(loadSettings());
   state.nickname = nickname;
   saveState();
   document.getElementById('gate').style.display = 'none';
@@ -419,6 +472,12 @@ function switchTab(tab){
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.tab===tab));
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
   document.getElementById('view-'+tab).classList.add('on');
+  // 관리자 페이지에서 경기·포인트가 바뀌었을 수 있으므로 탭 전환 시마다 최신 데이터를 다시 불러온다
+  state = loadState() || state;
+  MATCHES = loadMatches();
+  settlePendingPredictions();
+  document.getElementById('balanceDisplay').textContent = state.balance.toLocaleString();
+  if(tab==='matches') renderMatches();
   if(tab==='board') renderBoard();
   if(tab==='history') renderHistory();
 }
@@ -450,7 +509,7 @@ function renderMatches(){
   const list = MATCHES.filter(m=> currentSport==='all' || m.sport===currentSport);
   grid.innerHTML = list.map(m=>{
     const isSoccer = m.sport==='soccer';
-    const resolved = state.resolved[m.id];
+    const resolved = m.result;
     const mine = myPredictionFor(m.id);
     const keys = isSoccer ? ['home','draw','away'] : ['home','away'];
 
@@ -500,11 +559,14 @@ function renderMatches(){
 function openModal(matchId, pick){
   const match = MATCHES.find(m=>m.id===matchId);
   if(!match) return;
-  if(state.resolved[matchId] || myPredictionFor(matchId)) return;
+  if(match.result || myPredictionFor(matchId)) return;
   modalCtx = {match, pick};
+  const settings = loadSettings();
   document.getElementById('modalTitle').textContent = '예측하기';
   document.getElementById('modalSub').textContent = `${match.home} vs ${match.away} · 선택: ${outcomeLabel(match.sport,pick,match.home,match.away)} (${match.odds[pick].toFixed(2)}배)`;
-  document.getElementById('stakeInput').value = 100;
+  const stakeEl = document.getElementById('stakeInput');
+  stakeEl.min = settings.minStake;
+  stakeEl.value = settings.minStake;
   document.getElementById('modalErr').style.display = 'none';
   updatePreview();
   document.getElementById('overlay').classList.add('on');
@@ -530,7 +592,9 @@ function updatePreview(){
 function confirmPrediction(){
   const stake = Number(document.getElementById('stakeInput').value)||0;
   const errEl = document.getElementById('modalErr');
-  if(stake < 100){ errEl.textContent='최소 100P 이상 입력해주세요.'; errEl.style.display='block'; return; }
+  const settings = loadSettings();
+  if(stake < settings.minStake){ errEl.textContent=`최소 ${settings.minStake.toLocaleString()}P 이상 입력해주세요.`; errEl.style.display='block'; return; }
+  if(stake > settings.maxStake){ errEl.textContent=`최대 ${settings.maxStake.toLocaleString()}P까지 베팅할 수 있습니다.`; errEl.style.display='block'; return; }
   if(stake > state.balance){ errEl.textContent='보유 포인트를 초과할 수 없습니다.'; errEl.style.display='block'; return; }
   const {match, pick} = modalCtx;
   state.balance -= stake;
@@ -561,24 +625,13 @@ function weightedPick(odds){
 }
 
 function simulateResults(){
-  const pending = MATCHES.filter(m=>!state.resolved[m.id]);
-  if(pending.length===0){ alert('시뮬레이션할 예정 경기가 없습니다. "전체 초기화" 후 다시 시도해보세요.'); return; }
+  MATCHES = loadMatches();
+  const pending = MATCHES.filter(m=>!m.result);
+  if(pending.length===0){ alert('시뮬레이션할 예정 경기가 없습니다. 관리자 페이지에서 경기를 추가하거나 "전체 초기화" 후 다시 시도해보세요.'); return; }
 
-  pending.forEach(m=>{
-    const result = weightedPick(m.odds);
-    state.resolved[m.id] = result;
-    const mine = myPredictionFor(m.id);
-    if(mine && mine.result==='pending'){
-      if(mine.pick===result){
-        mine.result = 'win';
-        mine.delta = Math.floor(mine.stake*mine.multiplier);
-        state.balance += mine.delta;
-      } else {
-        mine.result = 'lose';
-        mine.delta = -mine.stake;
-      }
-    }
-  });
+  pending.forEach(m=>{ m.result = weightedPick(m.odds); });
+  saveMatches(MATCHES);
+  settlePendingPredictions();
 
   // 봇 리더보드도 자연스럽게 변동
   state.bots.forEach(b=>{
