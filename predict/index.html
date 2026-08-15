@@ -50,6 +50,12 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .btn-sim{background:linear-gradient(135deg,#FF9A3D,#FF6B6B);color:#fff;font-weight:700;font-size:12.5px;border-radius:999px;padding:8px 14px;box-shadow:var(--sh);transition:var(--tr)}
 .btn-sim:hover{transform:translateY(-1px);box-shadow:var(--sh-md)}
 .btn-sim:disabled{opacity:.45;cursor:default;transform:none}
+.btn-share{background:linear-gradient(135deg,var(--brand2),var(--accent));color:#fff;font-weight:700;font-size:12.5px;border-radius:999px;padding:8px 14px;box-shadow:var(--sh);transition:var(--tr)}
+.btn-share:hover{transform:translateY(-1px);box-shadow:var(--sh-md)}
+
+/* ===== 토스트 ===== */
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:13px;font-weight:600;box-shadow:var(--sh-md);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:900;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 
 /* ===== 탭 네비 ===== */
 nav.tabs{max-width:1040px;margin:0 auto;padding:0 20px;display:flex;gap:4px;border-bottom:1px solid var(--border);overflow-x:auto}
@@ -193,6 +199,7 @@ nav.tabs button:hover{color:var(--brand2)}
   <div class="header-inner">
     <div class="logo"><span class="dot"></span>PICKPLAY</div>
     <div class="header-right">
+      <button class="btn-share" id="shareBtn" onclick="shareSite()">🔗 공유하기</button>
       <button class="btn-sim" id="simBtn" onclick="simulateResults()">🎲 결과 시뮬레이션 (데모)</button>
       <div class="nick-pill" id="nickPill">👤 -</div>
       <div class="balance-pill">P <span class="amt" id="balanceDisplay">0</span></div>
@@ -247,13 +254,16 @@ nav.tabs button:hover{color:var(--brand2)}
         <li>모든 포인트는 <b>가상 재화</b>이며 실제 현금으로 충전하거나 환전할 수 없습니다.</li>
         <li>누구나 10,000P로 시작하며, 예측이 맞으면 배율만큼 포인트를 얻고 틀리면 걸었던 포인트를 잃습니다.</li>
         <li>경기 데이터는 데모용 샘플이며, 상단 "결과 시뮬레이션" 버튼으로 결과를 즉시 확인할 수 있습니다.</li>
-        <li>실제 서비스로 확장 시에는 실시간 경기 결과 API와 회원별 계정 시스템을 연동할 수 있습니다.</li>
+        <li>우측 상단 "🔗 공유하기" 버튼으로 친구에게 초대 링크를 보낼 수 있지만, 현재는 각자 브라우저에 저장되는 개인 기록이라 실시간으로 같은 순위표를 공유하지는 않습니다.</li>
+        <li>실제 서비스로 확장 시에는 실시간 경기 결과 API와 회원별 계정·서버 기반 리더보드를 연동할 수 있습니다.</li>
         <li>본 서비스는 오락 목적이며 사행성 콘텐츠가 아닙니다.</li>
       </ul>
     </div>
   </div>
 
 </div>
+
+<div class="toast" id="toast"></div>
 
 <!-- 예측 모달 -->
 <div class="overlay" id="overlay">
@@ -368,6 +378,40 @@ function resetGame(){
   if(!confirm('닉네임, 포인트, 예측 기록이 모두 초기화됩니다. 계속할까요?')) return;
   localStorage.removeItem(STORE_KEY);
   location.reload();
+}
+
+/* ===================== 토스트 / 공유 ===================== */
+let toastTimer = null;
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> el.classList.remove('on'), 2400);
+}
+
+async function shareSite(){
+  const nickname = state && state.nickname ? state.nickname : '플레이어';
+  const balance = state ? state.balance.toLocaleString() : '10,000';
+  const url = window.location.href;
+  const text = `[PICKPLAY] ${nickname}님이 가상 포인트 ${balance}P로 스포츠 승부예측 중! 실제 현금 없이 즐기는 예측 게임, 같이 해봐요 🏆`;
+
+  if(navigator.share){
+    try{
+      await navigator.share({title:'PICKPLAY', text, url});
+    }catch(e){ /* 사용자가 공유를 취소한 경우 등은 무시 */ }
+    return;
+  }
+
+  const shareText = text + '\n' + url;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    try{
+      await navigator.clipboard.writeText(shareText);
+      showToast('초대 메시지와 링크가 복사되었습니다!');
+      return;
+    }catch(e){ /* 클립보드 권한이 없으면 아래 프롬프트로 대체 */ }
+  }
+  window.prompt('아래 내용을 복사해서 친구에게 공유하세요', shareText);
 }
 
 /* ===================== 탭 ===================== */
